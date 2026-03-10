@@ -117,58 +117,302 @@
       <h2>Golf Academy — Master the Real Game</h2>
       <div id="golf-lesson">
         <p><strong>Welcome to the links!</strong> Golf is played over 18 holes on a course. The objective: complete each hole in as few strokes as possible. Your <em>score</em> is measured relative to par.</p>
-        <div class="golf-vocab">
-          <h3>Scoring Terms</h3>
+
+        <div class="golf-section-tabs">
+          <button class="golf-sec-tab active" data-golfsec="how-to-play">How to Play</button>
+          <button class="golf-sec-tab" data-golfsec="posture">Posture & Technique</button>
+          <button class="golf-sec-tab" data-golfsec="clubs-guide">Clubs Guide</button>
+          <button class="golf-sec-tab" data-golfsec="shots-vocab">Shots & Vocabulary</button>
+          <button class="golf-sec-tab" data-golfsec="strategy">Strategy & Sayings</button>
+        </div>
+
+        <!-- HOW TO PLAY -->
+        <div class="golf-sec active" id="golfsec-how-to-play">
+          <h3>How Golf Works</h3>
+          <p>A round of golf is 18 holes (this game plays 9). Each hole has a <strong>par</strong> — the number of strokes an expert is expected to take. Par 3 = short hole, Par 4 = medium, Par 5 = long.</p>
+          <h4>Flow of Every Hole:</h4>
+          <ol>
+            <li><strong>Tee Off</strong> — Stand in the tee box, place your ball on a tee (wooden peg), and hit your first shot. On par 4s and 5s, use your Driver for max distance. On par 3s, use an iron or hybrid to reach the green directly.</li>
+            <li><strong>Fairway Shots</strong> — After your tee shot, you're (hopefully) in the fairway. Select a club based on your remaining distance to the pin. This is your "approach shot."</li>
+            <li><strong>Short Game</strong> — If you're within 100 yards, use your wedges. Near the green? Chip (low, rolling shot) or pitch (higher, softer landing).</li>
+            <li><strong>Putting</strong> — Once on the green, switch to your Putter. Read the slope, judge the speed, and roll it into the hole.</li>
+          </ol>
+          <h4>Scoring</h4>
           <ul>
-            <li><strong>Ace / Hole-in-One:</strong> 1 stroke on any hole — the dream shot</li>
-            <li><strong>Condor:</strong> 4 under par (-4) — virtually mythical</li>
-            <li><strong>Albatross (Double Eagle):</strong> 3 under par (-3) — extremely rare</li>
-            <li><strong>Eagle:</strong> 2 under par (-2) — outstanding</li>
-            <li><strong>Birdie:</strong> 1 under par (-1) — great shot-making</li>
-            <li><strong>Par:</strong> Expected strokes for the hole (3, 4, or 5)</li>
-            <li><strong>Bogey:</strong> 1 over par (+1) — average for amateurs</li>
-            <li><strong>Double Bogey:</strong> 2 over (+2) | <strong>Triple Bogey:</strong> 3 over (+3)</li>
-            <li><strong>Snowman:</strong> Score of 8 on a hole — you want to avoid this</li>
+            <li><strong>Ace / Hole-in-One:</strong> 1 stroke on any hole — the dream shot. Tradition: you buy drinks for everyone at the clubhouse</li>
+            <li><strong>Condor:</strong> 4 under par (-4) — virtually mythical, fewer than 5 ever recorded</li>
+            <li><strong>Albatross (Double Eagle):</strong> 3 under par (-3) — extremely rare, maybe once in a pro career</li>
+            <li><strong>Eagle:</strong> 2 under par (-2) — outstanding. Usually holing out from the fairway or a long putt</li>
+            <li><strong>Birdie:</strong> 1 under par (-1) — great shot-making. Pros average 3-5 birdies per round</li>
+            <li><strong>Par:</strong> Expected strokes for the hole — this is a good score</li>
+            <li><strong>Bogey:</strong> 1 over par (+1) — most common score for amateurs</li>
+            <li><strong>Double Bogey:</strong> 2 over (+2) | <strong>Triple Bogey:</strong> 3 over (+3) — time to regroup</li>
+            <li><strong>Snowman:</strong> Score of 8 on any hole — a round-killer you want to avoid</li>
           </ul>
-          <h3>Course Anatomy</h3>
+          <h4>The Course</h4>
           <ul>
-            <li><strong>Tee Box:</strong> Starting area — you "tee off" from here</li>
-            <li><strong>Fairway:</strong> The short-grass path from tee to green — keep it here</li>
-            <li><strong>Rough:</strong> Longer grass flanking the fairway — harder to hit from</li>
-            <li><strong>Green:</strong> Ultra-short grass around the hole — putt here</li>
-            <li><strong>Bunker (Sand Trap):</strong> Sand-filled hazards — requires a special shot to escape</li>
-            <li><strong>Water Hazard:</strong> Ponds, creeks, lakes — ball in = 1 stroke penalty</li>
-            <li><strong>Fringe/Apron:</strong> The collar of grass between fairway and green</li>
-            <li><strong>Dogleg:</strong> A hole that bends left or right — strategy matters</li>
-            <li><strong>Pin/Flagstick:</strong> The flag marking the hole's location on the green</li>
+            <li><strong>Tee Box:</strong> Starting area — you "tee off" from here. Different colored markers for different skill levels (red=forward, white=middle, blue/black=back)</li>
+            <li><strong>Fairway:</strong> The short-mowed path from tee to green — this is where you want your ball. Best lies, best control.</li>
+            <li><strong>Rough:</strong> Longer grass flanking the fairway — ball sits down, harder to hit cleanly, lose ~20% distance</li>
+            <li><strong>Green:</strong> Ultra-short, smooth grass around the hole — only use your putter here</li>
+            <li><strong>Bunker (Sand Trap):</strong> Sand-filled hazards. Greenside bunkers protect the green, fairway bunkers punish errant tee shots. Use your Sand Wedge to "splash" out</li>
+            <li><strong>Water Hazard:</strong> Ponds, creeks, lakes — ball goes in = 1 stroke penalty + you drop behind the hazard</li>
+            <li><strong>Fringe/Apron:</strong> The collar of slightly longer grass between fairway and green — you can putt or chip from here</li>
+            <li><strong>Dogleg:</strong> A hole that bends left or right mid-fairway — requires strategic club choice and aim</li>
+            <li><strong>Pin/Flagstick:</strong> The flag marking the hole's exact location on the green</li>
+            <li><strong>Out of Bounds (OB):</strong> Marked by white stakes. Ball goes OB = stroke + distance penalty (re-hit from where you were)</li>
           </ul>
+          <h4>How to Play This Game:</h4>
+          <ol>
+            <li>Check your <strong>distance to pin</strong> in the scoreboard</li>
+            <li>Select a <strong>club</strong> whose max yardage covers that distance</li>
+            <li>Set <strong>power</strong> (75-100% for full shots, less for partial shots)</li>
+            <li>Adjust <strong>aim</strong> — 0° aims straight at the hole; negative = left, positive = right</li>
+            <li>Choose a <strong>shot shape</strong> if you need to curve around obstacles</li>
+            <li>The yellow dotted line shows exactly where you're aiming, with a landing zone circle</li>
+            <li>Click <strong>Swing!</strong> and watch the ball fly</li>
+          </ol>
+        </div>
+
+        <!-- POSTURE & TECHNIQUE -->
+        <div class="golf-sec" id="golfsec-posture">
+          <h3>Posture, Grip & Stance — The Foundation of Every Shot</h3>
+          <p><em>"Golf is 90% setup. If you set up correctly, the swing takes care of itself."</em> — Jack Nicklaus</p>
+
+          <h4>The Grip — How You Hold the Club</h4>
+          <p>The grip is the ONLY connection between your body and the club. Get this wrong and nothing else matters.</p>
+          <ul>
+            <li><strong>Interlocking Grip:</strong> Pinky of right hand interlocks with index finger of left hand. Used by Tiger Woods and Jack Nicklaus. Best for smaller hands or those wanting maximum control.</li>
+            <li><strong>Overlapping (Vardon) Grip:</strong> Right pinky sits on top of the gap between left index and middle finger. Most popular grip on tour. Good for larger hands.</li>
+            <li><strong>Ten-Finger (Baseball) Grip:</strong> All ten fingers on the club, no interlocking. Best for beginners, juniors, or those with arthritis. Maximum comfort.</li>
+          </ul>
+          <h4>Grip Pressure</h4>
+          <ul>
+            <li>On a scale of 1-10 (1=barely holding, 10=death grip), aim for <strong>4-5</strong></li>
+            <li><em>"Hold the club like you're holding a baby bird — firm enough it won't fly away, soft enough you won't hurt it."</em> — Sam Snead</li>
+            <li>Tension kills swing speed. Loose wrists = faster clubhead = more distance</li>
+            <li>The left hand controls direction, the right hand provides power (for right-handed golfers)</li>
+          </ul>
+
+          <h4>The Stance — Your Foundation</h4>
+          <ul>
+            <li><strong>Feet:</strong> Shoulder-width apart for irons, slightly wider for driver. Weight evenly distributed 50/50</li>
+            <li><strong>Ball Position:</strong>
+              <ul>
+                <li>Driver: inside left heel (forward in stance) — you hit the ball on the upswing</li>
+                <li>Irons: center of stance — you hit the ball with a descending blow, ball-then-turf contact</li>
+                <li>Wedges: slightly right of center — maximum descending strike for spin and control</li>
+                <li>Putter: center or slightly forward — smooth, level stroke</li>
+              </ul>
+            </li>
+            <li><strong>Foot Flare:</strong> Left foot turned out ~20-30° toward target. Right foot can be square or slightly flared. This allows proper hip rotation through impact.</li>
+            <li><strong>Alignment:</strong> Feet, hips, and shoulders should all be parallel to your target line. Imagine railroad tracks — ball on one rail, feet on the other.</li>
+          </ul>
+
+          <h4>Posture — How You Stand Over the Ball</h4>
+          <ul>
+            <li><strong>Spine Angle:</strong> Bend forward from the hips (NOT the waist) about 30-35°. Your back should be relatively straight, not rounded. Think "athletic ready position"</li>
+            <li><strong>Knee Flex:</strong> Slight bend — like you're about to sit on a high barstool. NOT a deep squat. Knees should be over the balls of your feet</li>
+            <li><strong>Arms:</strong> Hang naturally from your shoulders. Don't reach for the ball. Your arms should feel relaxed and form a slight "V" shape</li>
+            <li><strong>Chin Up:</strong> Keep your chin off your chest — your left shoulder needs room to turn under your chin during the backswing</li>
+            <li><strong>Weight:</strong> On the balls of your feet, not your heels or toes. You should feel balanced and athletic, like a shortstop ready to field</li>
+            <li><strong>Distance from Ball:</strong> When you sole the club behind the ball, there should be about a hand's width between the butt of the club and your thigh</li>
+          </ul>
+
+          <h4>The Full Swing — Broken Down</h4>
+          <ol>
+            <li><strong>Address (Setup):</strong> Grip, stance, posture, alignment all checked. Take one look at target, then focus on the ball. Deep breath.</li>
+            <li><strong>Takeaway:</strong> Start the club back low and slow with your shoulders/torso — NOT your hands. The clubhead, hands, and chest move as one unit for the first 12-18 inches. "Low and slow."</li>
+            <li><strong>Backswing:</strong> Continue turning your shoulders until your back faces the target (or as far as flexibility allows). Left arm stays relatively straight. Club points at the target at the top. Weight shifts to right foot (60/40). Wrists hinge naturally — don't force them.</li>
+            <li><strong>Transition:</strong> The most critical millisecond. Start the downswing with your <strong>lower body</strong> — left hip bumps toward target, then rotates open. Arms and club follow. This creates the "lag" that generates power. <em>"The downswing starts from the ground up."</em> — Ben Hogan</li>
+            <li><strong>Downswing:</strong> Hips lead, shoulders follow, arms follow, clubhead follows LAST. Feel like you're pulling the butt of the club toward the ball. Maintain your spine angle — don't stand up.</li>
+            <li><strong>Impact:</strong> Hands ahead of the clubhead (especially with irons — this is called "shaft lean"). Weight shifting to left side (70/30). Hit the ball THEN the turf (with irons). Clubface square to target.</li>
+            <li><strong>Follow-through:</strong> Let momentum carry the club around your body. Belt buckle faces the target. Weight fully on left foot. Right heel comes off the ground. Club finishes over your left shoulder. Hold the pose — "pose for the photo."</li>
+          </ol>
+
+          <h4>Putting Technique</h4>
+          <ul>
+            <li><strong>Grip:</strong> Many different styles — reverse overlap is most common. Grip lighter than full swing shots. Some pros use "claw" or "cross-handed" grip</li>
+            <li><strong>Stance:</strong> Narrower than full swing. Eyes directly over the ball (drop a ball from your eye line to check). Weight slightly favoring left side (55/45)</li>
+            <li><strong>Stroke:</strong> Pendulum motion from the shoulders — arms and putter move as one unit. NO wrist action. Same length back and through. Accelerate gently through the ball</li>
+            <li><strong>Speed Control:</strong> This is the #1 skill in putting. Distance matters more than direction. Practice lag putting (long putts) to get speed right — most 3-putts happen because of poor speed, not bad aim</li>
+            <li><strong>Reading Greens:</strong> Look for slope — water runs downhill, so does your ball. Grain direction matters (grass grows toward the setting sun). Uphill putts are slower and break less. Downhill putts are fast and break more</li>
+          </ul>
+
+          <h4>What to Look For — Self-Diagnosis</h4>
+          <table class="golf-diag-table">
+            <tr><th>Problem</th><th>Likely Cause</th><th>Fix</th></tr>
+            <tr><td>Slice (curves hard right)</td><td>Open clubface at impact, outside-in swing path</td><td>Strengthen grip (rotate both hands clockwise). Swing more from inside. Feel like you're hitting a baseball to right field</td></tr>
+            <tr><td>Hook (curves hard left)</td><td>Closed clubface, inside-out path</td><td>Weaken grip slightly. Check alignment — you may be aimed right</td></tr>
+            <tr><td>Topping the ball (grounders)</td><td>Standing up through impact, head lifting</td><td>Keep your head down and eyes on the ball. Maintain spine angle. "Watch the club hit the ball"</td></tr>
+            <tr><td>Fat shots (hitting behind ball)</td><td>Weight staying on back foot, swaying</td><td>Shift weight to front foot on downswing. Feel like you're "covering" the ball with your chest</td></tr>
+            <tr><td>Shanks (ball goes sideways)</td><td>Standing too close, club hosel hits ball</td><td>Step slightly farther from ball. Focus on hitting the center of the clubface. Stay balanced</td></tr>
+            <tr><td>No distance</td><td>Casting (releasing wrists too early), no lag</td><td>Feel like you're pulling the grip toward the ball. "Lag" the clubhead. Let the club do the work</td></tr>
+            <tr><td>Inconsistent contact</td><td>Swaying laterally instead of rotating</td><td>Feel like you're turning in a barrel. Head stays centered. Rotate, don't slide</td></tr>
+          </table>
+
+          <h4>The Pre-Shot Routine — What Pros Do Before Every Shot</h4>
+          <ol>
+            <li><strong>Behind the ball:</strong> Stand behind the ball, pick your target, and visualize the shot shape and trajectory</li>
+            <li><strong>Pick an intermediate target:</strong> Find a spot 2-3 feet in front of your ball on the target line (a divot, leaf, or discolored grass). It's easier to aim at something close than something 200 yards away</li>
+            <li><strong>Address:</strong> Step in, align clubface to your intermediate target first, then set your feet</li>
+            <li><strong>Waggle:</strong> Small movements to stay loose — don't freeze over the ball. One look at the target, then go</li>
+            <li><strong>Commit:</strong> Once you start the swing, commit 100%. Indecision is the #1 cause of bad shots. "Swing with conviction."</li>
+          </ol>
+        </div>
+
+        <!-- CLUBS GUIDE -->
+        <div class="golf-sec" id="golfsec-clubs-guide">
+          <h3>Your 14 Clubs — What Each One Does</h3>
+          <p>Rules allow a maximum of 14 clubs in your bag. Here's what each does and when to use it:</p>
+
+          <h4>Woods — Maximum Distance</h4>
+          <ul>
+            <li><strong>Driver (1-Wood):</strong> 230+ yards. Longest club in the bag, biggest head, lowest loft (8-12°). Used off the tee ONLY (ball is teed up). The ball is positioned forward in your stance (inside left heel). You hit slightly UP on the ball to maximize carry. <em>When to use:</em> Tee shots on par 4s and par 5s when you need maximum distance and the fairway is wide.</li>
+            <li><strong>3-Wood:</strong> 200-210 yards. Can be hit off the tee OR off the fairway. More loft than driver (15°), easier to control. <em>When to use:</em> Off the tee when accuracy matters more than distance. From the fairway on long par 5s to reach the green in two.</li>
+            <li><strong>5-Wood:</strong> 185-195 yards. Even more loft (18°), even easier to hit. Gets the ball airborne quickly. <em>When to use:</em> From the fairway or rough when you need distance but the lie is tight. Great for beginners who struggle with long irons.</li>
+          </ul>
+
+          <h4>Hybrids — The Best of Both Worlds</h4>
+          <ul>
+            <li><strong>3-Hybrid & 4-Hybrid:</strong> 175-190 yards. Combine the distance of long irons with the forgiveness of woods. Wider sole glides through rough instead of digging. <em>When to use:</em> Any time you'd reach for a 3-iron or 4-iron. From the rough when you need distance. "Rescue clubs" — they rescue you from bad lies.</li>
+          </ul>
+
+          <h4>Irons — Precision and Control</h4>
+          <ul>
+            <li><strong>5-Iron (170 yds):</strong> Long approach shots. Harder to hit — consider a hybrid instead if you're a beginner</li>
+            <li><strong>6-Iron (160 yds):</strong> Mid-long approach. Good from the fairway when you need a controlled long shot</li>
+            <li><strong>7-Iron (150 yds):</strong> THE workhorse club. Most used iron in the bag. The "go-to" club for the driving range. If you only practice with one club, make it this one</li>
+            <li><strong>8-Iron (140 yds):</strong> Controlled approach. Higher trajectory, more spin, ball stops quicker on the green</li>
+            <li><strong>9-Iron (130 yds):</strong> Short approach. High trajectory. Great for hitting over bunkers or hazards that guard the green</li>
+          </ul>
+          <p><strong>Iron technique:</strong> Ball-first contact is key. You hit DOWN on the ball (descending blow), compressing it against the turf. The divot should be AFTER (target-side of) where the ball was. This is what creates backspin and that piercing, controlled trajectory.</p>
+
+          <h4>Wedges — The Scoring Clubs</h4>
+          <p><em>"You drive for show, but you wedge for dough."</em> Wedges are where you score. Tour pros practice short game more than anything else.</p>
+          <ul>
+            <li><strong>Pitching Wedge (PW, 44-48°):</strong> 110-120 yards. Full approach shots. The bridge between your irons and scoring wedges</li>
+            <li><strong>Gap Wedge (GW, 50-52°):</strong> 90-100 yards. Fills the yardage "gap" between PW and SW. Essential for those awkward in-between distances</li>
+            <li><strong>Sand Wedge (SW, 54-56°):</strong> 70-80 yards. The bunker escape specialist. Wide sole "bounces" through sand instead of digging. Open the face, aim behind the ball, splash through the sand. Also great for pitch shots around the green</li>
+            <li><strong>Lob Wedge (LW, 58-62°):</strong> 40-60 yards. Maximum loft. Phil Mickelson's favorite. Hit flop shots that go almost straight up and stop dead on the green. Use for: short-sided pins, shots over bunkers with no green to work with, hitting over obstacles</li>
+          </ul>
+
+          <h4>Putter — Where Rounds Are Won and Lost</h4>
+          <ul>
+            <li><strong>Putter:</strong> Used on the green (and sometimes the fringe). No loft — rolls the ball along the ground. ~40% of all strokes in a round are putts. Tour pros make ~50% of putts from 8 feet. From 20+ feet, pros are just trying to get it close (lag putting).</li>
+            <li><strong>Types:</strong> Blade putters (Scotty Cameron style — for arcing strokes), Mallet putters (high MOI, more forgiving, straight-back-straight-through stroke), Center-shafted (maximizes face-balanced feel)</li>
+          </ul>
+
+          <h4>Club Selection Quick Reference</h4>
+          <table class="golf-diag-table">
+            <tr><th>Distance to Pin</th><th>Recommended Club</th><th>Shot Type</th></tr>
+            <tr><td>200+ yards</td><td>Driver (tee), 3-Wood, 3-Hybrid</td><td>Full swing</td></tr>
+            <tr><td>170-200 yards</td><td>5-Wood, 3/4-Hybrid, 5-Iron</td><td>Full swing</td></tr>
+            <tr><td>150-170 yards</td><td>6-Iron, 7-Iron</td><td>Full swing</td></tr>
+            <tr><td>130-150 yards</td><td>8-Iron, 9-Iron</td><td>Full swing</td></tr>
+            <tr><td>100-130 yards</td><td>PW, Gap Wedge</td><td>Full or 3/4 swing</td></tr>
+            <tr><td>60-100 yards</td><td>Gap Wedge, Sand Wedge</td><td>3/4 or 1/2 swing</td></tr>
+            <tr><td>30-60 yards</td><td>Sand Wedge, Lob Wedge</td><td>Pitch shot</td></tr>
+            <tr><td>Under 30 yards</td><td>Lob Wedge, SW, or PW</td><td>Chip or pitch</td></tr>
+            <tr><td>On the green</td><td>Putter</td><td>Putt</td></tr>
+            <tr><td>In a bunker</td><td>Sand Wedge or Lob Wedge</td><td>Bunker splash</td></tr>
+          </table>
+        </div>
+
+        <!-- SHOTS & VOCABULARY -->
+        <div class="golf-sec" id="golfsec-shots-vocab">
           <h3>Shot Types & Swing Terms</h3>
           <ul>
-            <li><strong>Drive / Tee Shot:</strong> First shot, maximum distance off the tee</li>
-            <li><strong>Approach Shot:</strong> Aiming for the green from the fairway</li>
-            <li><strong>Chip:</strong> Short, low shot near the green — rolls more than it flies</li>
-            <li><strong>Pitch:</strong> Higher, shorter shot that lands soft on the green</li>
-            <li><strong>Putt:</strong> Rolling the ball along the green into the hole</li>
-            <li><strong>Fade:</strong> Gentle left-to-right curve (right-handed) — controlled shape</li>
-            <li><strong>Draw:</strong> Gentle right-to-left curve — adds distance</li>
-            <li><strong>Slice:</strong> Uncontrolled fade — curves hard right (common beginner mistake)</li>
-            <li><strong>Hook:</strong> Uncontrolled draw — curves hard left</li>
-            <li><strong>Shank:</strong> Ball shoots sideways off the hosel — the most dreaded miss</li>
-            <li><strong>Flop Shot:</strong> High, soft shot that stops quickly — Phil Mickelson's specialty</li>
-            <li><strong>Punch/Stinger:</strong> Low, penetrating shot under wind — Tiger's go-to</li>
-            <li><strong>Lay Up:</strong> Intentionally short shot to avoid a hazard</li>
+            <li><strong>Drive / Tee Shot:</strong> First shot on each hole, maximum distance off the tee. Hit with Driver, 3-Wood, or iron depending on the hole</li>
+            <li><strong>Approach Shot:</strong> Any shot aimed at landing on the green. The "money shot" — this is what sets up birdies</li>
+            <li><strong>Lay Up:</strong> Intentionally hitting short of the green or a hazard. Smart course management. "Lay up to your favorite wedge distance"</li>
+            <li><strong>Chip:</strong> Short, low shot from near the green that rolls more than it flies. Uses 7-iron through PW. Think "putt it with loft." The ball pops up just enough to clear the fringe, then rolls to the hole</li>
+            <li><strong>Pitch:</strong> Higher, shorter shot from 20-60 yards that lands soft on the green with minimal roll. Uses SW or LW. More wrist hinge than a chip</li>
+            <li><strong>Bump and Run:</strong> A low chip that runs along the ground, like a putt with extra oomph. Use when there's nothing between you and the green. Highest percentage shot around the green</li>
+            <li><strong>Flop Shot:</strong> Ultra-high, ultra-soft shot that goes almost straight up and stops dead. Open the face of your LW, swing hard, ball goes high not far. Phil Mickelson's signature shot. High risk/high reward</li>
+            <li><strong>Putt:</strong> Rolling the ball along the green into the hole. Pendulum stroke from shoulders, no wrist action. Speed control is more important than line</li>
+            <li><strong>Punch/Stinger:</strong> Low, penetrating shot that stays under the wind and rolls out. Ball back in stance, shorter backswing, hands ahead through impact. Tiger Woods made this shot famous</li>
           </ul>
-          <h3>Common Golf Sayings</h3>
+
+          <h3>Ball Flight Shapes</h3>
           <ul>
-            <li><em>"Drive for show, putt for dough."</em> — Putting wins tournaments</li>
-            <li><em>"Grip it and rip it."</em> — Swing hard, worry later (John Daly style)</li>
-            <li><em>"It's not how, it's how many."</em> — Ugly shots that go in still count</li>
-            <li><em>"Every shot makes someone happy."</em> — Bad shots happen to everyone</li>
-            <li><em>"The ball doesn't know who's hitting it."</em> — Trust the swing, not the nerves</li>
-            <li><em>"Play the course, not your opponent."</em> — Focus on your own game</li>
-            <li><em>"A bad day of golf beats a good day at the office."</em> — Enjoy the walk</li>
-            <li><em>"Swing easy, hit hard."</em> — Tempo beats force every time</li>
-            <li><em>"Miss it on the correct side."</em> — Course management is key</li>
+            <li><strong>Straight:</strong> Ball goes where you aim. The goal, but the hardest to hit consistently. Most pros play a controlled fade or draw</li>
+            <li><strong>Fade:</strong> Gentle left-to-right curve (for right-handed golfers). Reliable, predictable. The "safe" shot shape. Lands softer. Used by: Hogan, Trevino, Nicklaus</li>
+            <li><strong>Draw:</strong> Gentle right-to-left curve. Adds 5-15 yards of extra distance due to lower spin and more roll. The "power" shape. Used by: Tiger, Rory, Bubba Watson</li>
+            <li><strong>Slice:</strong> An UNCONTROLLED fade — curves hard right, loses distance, the bane of every beginner. Caused by an open clubface relative to swing path</li>
+            <li><strong>Hook:</strong> An UNCONTROLLED draw — curves hard left, dives into trouble. Caused by a severely closed clubface. "A hook is a good player's miss"</li>
+            <li><strong>Push:</strong> Ball goes straight right of target. Swing path is too much from inside</li>
+            <li><strong>Pull:</strong> Ball goes straight left of target. Swing path is outside-in</li>
+            <li><strong>Shank:</strong> Ball shoots nearly 90° sideways off the hosel (the neck where clubhead meets shaft). The most dreaded and demoralizing shot in golf. "The S-word" — many golfers are superstitious about even saying it</li>
+            <li><strong>Skull/Blade:</strong> Hitting the ball with the leading edge of the club instead of the face. Ball rockets low and fast. Usually from tight lies when the club "picks" the ball</li>
+            <li><strong>Duff/Chunk:</strong> Hitting the ground before the ball. Ball goes nowhere. Opposite of a skull</li>
+          </ul>
+
+          <h3>Essential Golf Vocabulary</h3>
+          <ul>
+            <li><strong>Handicap:</strong> A number representing your skill level. A 0-handicap (scratch golfer) shoots par. A 20-handicap averages 20 over par. Lets players of different abilities compete fairly</li>
+            <li><strong>Scratch Golfer:</strong> A player with a 0 handicap — they can shoot par on any course. About 1.6% of all golfers</li>
+            <li><strong>The Turn:</strong> The halfway point — transitioning from the front 9 to the back 9. "How'd you play on the front?" "Made the turn at 38"</li>
+            <li><strong>Pin High:</strong> Your ball is level with the flagstick, just left or right of it. A good approach shot</li>
+            <li><strong>Lip Out:</strong> When the ball catches the edge of the cup, circles around, and stays out. Heartbreaking</li>
+            <li><strong>Gimme:</strong> A putt so short your playing partners concede it (casual play only — not in tournaments)</li>
+            <li><strong>Mulligan:</strong> A do-over shot (casual play only). "I'm taking a mulligan on that one"</li>
+            <li><strong>Breakfast Ball:</strong> A mulligan on the first tee. Many casual golfers give themselves one because "I wasn't warmed up"</li>
+            <li><strong>The Yips:</strong> Involuntary hand spasms during putting — a psychological condition that has ended pro careers</li>
+            <li><strong>Fried Egg:</strong> A ball buried in a bunker so only the top is visible — looks like a fried egg in the sand</li>
+            <li><strong>Dance Floor:</strong> Slang for the green. "We're on the dance floor!"</li>
+            <li><strong>Up and Down:</strong> Getting on the green and into the hole in two shots from off the green. "I chipped it close and made the putt — great up and down"</li>
+            <li><strong>Sand Save:</strong> An up-and-down from a bunker — splash out and one-putt</li>
+            <li><strong>GIR (Green in Regulation):</strong> Reaching the green in the expected number of approach strokes (par minus 2). Par 3: on green in 1. Par 4: on green in 2. Par 5: on green in 3</li>
+            <li><strong>Fore!:</strong> Shouted when a ball is heading toward people. If you hear it, cover your head and duck. This is the most important safety word in golf</li>
+          </ul>
+        </div>
+
+        <!-- STRATEGY & SAYINGS -->
+        <div class="golf-sec" id="golfsec-strategy">
+          <h3>Course Management — How Pros Think</h3>
+          <ul>
+            <li><strong>Play to your strengths.</strong> If you hit a fade, aim left and let it fade back. Don't try to hit shots you haven't practiced.</li>
+            <li><strong>"Miss it on the correct side."</strong> If there's water right, aim left-center. Give yourself room for error on the safe side.</li>
+            <li><strong>Aim for the fat part of the green.</strong> Don't always fire at the pin. A 30-foot putt beats a greenside bunker shot every time.</li>
+            <li><strong>Par 5s are birdie holes.</strong> Play aggressively — lay up to your favorite wedge distance for a makeable birdie putt.</li>
+            <li><strong>Never follow a bad shot with a stupid shot.</strong> After a miss, take your medicine. Chip back to the fairway. Don't try a hero shot from the trees.</li>
+            <li><strong>The 60-yard rule:</strong> Most scoring happens from 60 yards and in. This is where practice pays off the most.</li>
+            <li><strong>Lag putting:</strong> On putts over 30 feet, just get it within 3 feet. Two-putting from long range is a great result. Three-putts kill rounds.</li>
+          </ul>
+
+          <h3>Classic Golf Sayings</h3>
+          <ul>
+            <li><em>"Drive for show, putt for dough."</em> — Bobby Locke. Putting wins tournaments — 40% of your strokes happen on the green</li>
+            <li><em>"Grip it and rip it."</em> — John Daly. Sometimes you just have to swing free and trust it</li>
+            <li><em>"It's not how, it's how many."</em> — Ugly shots that go in still count the same</li>
+            <li><em>"Every shot makes someone happy."</em> — Even your worst shot delights your playing partners</li>
+            <li><em>"The ball doesn't know who's hitting it."</em> — Don't be intimidated. Trust the swing, not the nerves</li>
+            <li><em>"Play the course, not your opponent."</em> — Focus on your own game in stroke play</li>
+            <li><em>"A bad day of golf beats a good day at the office."</em> — It's a beautiful walk ruined, but still a beautiful walk</li>
+            <li><em>"Swing easy, hit hard."</em> — Julius Boros. Tempo and timing beat raw muscle every time</li>
+            <li><em>"The most important shot in golf is the next one."</em> — Ben Hogan. Let go of the last shot immediately</li>
+            <li><em>"Golf is deceptively simple and endlessly complicated."</em> — Arnold Palmer</li>
+            <li><em>"I never learned anything from a match I won."</em> — Bobby Jones</li>
+            <li><em>"Golf is a game that is played on a five-inch course — the distance between your ears."</em> — Bobby Jones</li>
+            <li><em>"Nobody ever swung too slow."</em> — Bobby Jones. Slow down your backswing</li>
+            <li><em>"The more I practice, the luckier I get."</em> — Gary Player</li>
+            <li><em>"Confidence is the most important single factor in this game."</em> — Jack Nicklaus</li>
+            <li><em>"Never up, never in."</em> — Old Scottish saying. A putt left short has zero chance of going in</li>
+            <li><em>"Tee it high and let it fly."</em> — For driver shots, tee the ball up and swing free</li>
+          </ul>
+
+          <h3>Golf Etiquette — The Unwritten Rules</h3>
+          <ul>
+            <li>Don't talk, move, or stand in someone's line during their swing or putt</li>
+            <li>Repair your ball marks on the green and replace your divots on the fairway</li>
+            <li>Rake bunkers after you hit out of them</li>
+            <li>Let faster groups "play through" — wave them ahead</li>
+            <li>Keep pace — be ready when it's your turn ("ready golf")</li>
+            <li>Yell "FORE!" immediately if your ball heads toward other people</li>
+            <li>Don't step on the line between another player's ball and the hole on the green</li>
+            <li>The player farthest from the hole plays first ("away goes first")</li>
+            <li>Shake hands after the round — "good game" no matter the score</li>
           </ul>
         </div>
       </div>
@@ -240,8 +484,72 @@
     <div class="lesson-panel">
       <h2>Blackjack School</h2>
       <div id="bj-lesson">
-        <p><strong>Goal:</strong> Get closer to 21 than the dealer without going over (busting).</p>
-        <p>Face cards = 10, Aces = 1 or 11. Dealer must hit on 16 or less, stand on 17+.</p>
+        <h3>The Goal</h3>
+        <p>Get your cards closer to <strong>21</strong> than the dealer — without going over. Go over 21 and you <strong>"bust"</strong> (instant loss, regardless of what the dealer has).</p>
+
+        <h3>Card Values</h3>
+        <ul>
+          <li><strong>Number cards (2-10):</strong> Face value (a 7 is worth 7)</li>
+          <li><strong>Face cards (J, Q, K):</strong> All worth 10</li>
+          <li><strong>Ace:</strong> Worth 11 OR 1 — automatically switches to 1 if counting it as 11 would bust you. A hand with an Ace counted as 11 is called a <strong>"soft" hand</strong> (e.g., Ace+6 = "soft 17"). A hand without a usable Ace is a <strong>"hard" hand</strong></li>
+        </ul>
+
+        <h3>How a Hand Plays</h3>
+        <ol>
+          <li><strong>Place your bet</strong> before cards are dealt</li>
+          <li>You and the dealer each get <strong>2 cards</strong> — one of the dealer's is face-down (the <strong>"hole card"</strong>)</li>
+          <li>You decide:
+            <ul>
+              <li><strong>Hit</strong> — Take another card. Risk: going over 21 (busting)</li>
+              <li><strong>Stand</strong> — Keep your current hand. No more cards</li>
+              <li><strong>Double Down</strong> — Double your bet, take exactly ONE more card, then you're done. Best when you have 10 or 11</li>
+            </ul>
+          </li>
+          <li>After you stand, the dealer reveals their hole card and <strong>must hit until reaching 17+</strong> — the dealer has no choice, they follow strict rules</li>
+          <li>Whoever is closer to 21 wins. Tie = <strong>"push"</strong> (bet returned)</li>
+        </ol>
+
+        <h3>Special Hands</h3>
+        <ul>
+          <li><strong>Blackjack (Natural 21):</strong> Ace + any 10-value card on the first two cards = instant win, usually pays <strong>3:2</strong> ($15 on a $10 bet). Beats a dealer's regular 21</li>
+          <li><strong>Bust:</strong> Going over 21. You lose immediately — even if the dealer would have busted too. This is the house edge</li>
+          <li><strong>Push:</strong> You and the dealer tie. Your bet is returned, nobody wins</li>
+        </ul>
+
+        <h3>Basic Strategy — What the Math Says</h3>
+        <p>Basic strategy reduces the house edge to just <strong>~0.5%</strong>. Here are the key rules:</p>
+        <ul>
+          <li><strong>Dealer shows 2-6 (weak)?</strong> They're likely to bust — stand on 12+ and let them blow up. "Never bust when the dealer can"</li>
+          <li><strong>Dealer shows 7-Ace (strong)?</strong> You need 17+ to compete — keep hitting until you get there</li>
+          <li><strong>You have 11?</strong> ALWAYS double down — best hand in blackjack. The math overwhelmingly favors you</li>
+          <li><strong>You have 10?</strong> Double down unless dealer shows 10 or Ace</li>
+          <li><strong>Soft 17 (Ace+6)?</strong> Always hit — you can't bust (the Ace becomes 1). You're trying to improve</li>
+          <li><strong>Hard 17+?</strong> ALWAYS stand. The odds of busting are 69%+ on hard 17</li>
+          <li><strong>Hard 12-16?</strong> The "danger zone." Hit against dealer 7+, stand against dealer 2-6</li>
+        </ul>
+
+        <h3>Bust Probability</h3>
+        <ul>
+          <li>Hand of 11 or less: <strong>0% chance</strong> of busting (always hit)</li>
+          <li>Hand of 12: <strong>31%</strong> chance of busting</li>
+          <li>Hand of 13: <strong>39%</strong></li>
+          <li>Hand of 14: <strong>56%</strong></li>
+          <li>Hand of 15: <strong>58%</strong></li>
+          <li>Hand of 16: <strong>62%</strong></li>
+          <li>Hand of 17+: <strong>69%+</strong> (almost never hit)</li>
+        </ul>
+
+        <h3>Vocabulary</h3>
+        <ul>
+          <li><strong>Shoe:</strong> The device holding multiple shuffled decks (usually 6 or 8 decks in casinos)</li>
+          <li><strong>Soft Hand:</strong> A hand with an Ace counted as 11 (e.g., A+5 = soft 16). Flexible — can't bust with one more card</li>
+          <li><strong>Hard Hand:</strong> A hand without a usable Ace (e.g., 10+6 = hard 16). What you see is what you get</li>
+          <li><strong>Upcard:</strong> The dealer's face-up card — your only clue to their hand</li>
+          <li><strong>Hole Card:</strong> The dealer's face-down card — revealed after you stand</li>
+          <li><strong>Insurance:</strong> A side bet offered when the dealer shows an Ace. Pays 2:1 if dealer has blackjack. Mathematically a bad bet — always decline</li>
+          <li><strong>Surrender:</strong> Give up half your bet and fold (not available in all casinos). Good play with 16 vs. dealer 10</li>
+          <li><strong>Card Counting:</strong> Tracking the ratio of high-to-low cards remaining. Legal but casinos will ask you to leave. The movie "21" made it famous</li>
+        </ul>
       </div>
       <div id="bj-tip" class="tip-box"></div>
     </div>
@@ -272,19 +580,75 @@
     <div class="lesson-panel">
       <h2>Texas Hold'em Poker School</h2>
       <div id="poker-lesson">
-        <p><strong>Hand Rankings (high to low):</strong></p>
+        <h3>The Goal</h3>
+        <p>Make the best 5-card hand using your <strong>2 private hole cards</strong> + <strong>5 shared community cards</strong> — or <strong>bluff</strong> everyone else into folding. You don't need the best hand to win — you just need everyone else to give up.</p>
+
+        <h3>Hand Rankings (Best to Worst)</h3>
         <ol>
-          <li>Royal Flush (A-K-Q-J-10 same suit)</li>
-          <li>Straight Flush (5 sequential, same suit)</li>
-          <li>Four of a Kind</li>
-          <li>Full House (3 of a kind + pair)</li>
-          <li>Flush (5 same suit)</li>
-          <li>Straight (5 sequential)</li>
-          <li>Three of a Kind</li>
-          <li>Two Pair</li>
-          <li>One Pair</li>
-          <li>High Card</li>
+          <li><strong>Royal Flush</strong> — A-K-Q-J-10, all same suit. The unbeatable hand. Odds: 1 in 649,740</li>
+          <li><strong>Straight Flush</strong> — 5 sequential cards, same suit (e.g., 7-8-9-10-J of hearts). Odds: 1 in 72,193</li>
+          <li><strong>Four of a Kind (Quads)</strong> — Four cards of the same rank (e.g., four Kings). Odds: 1 in 4,165</li>
+          <li><strong>Full House (Boat)</strong> — Three of a kind + a pair (e.g., three 8s + two Jacks, called "eights full of jacks"). Odds: 1 in 694</li>
+          <li><strong>Flush</strong> — Any 5 cards of the same suit, not in sequence. Higher cards win ties. Odds: 1 in 509</li>
+          <li><strong>Straight</strong> — 5 sequential cards, mixed suits (e.g., 4-5-6-7-8). Ace can be high or low (A-2-3-4-5 or 10-J-Q-K-A). Odds: 1 in 255</li>
+          <li><strong>Three of a Kind (Trips/Set)</strong> — Three cards of the same rank. "Trips" = one in your hand + two on the board. "Set" = pocket pair + one on board (more disguised, more profitable). Odds: 1 in 47</li>
+          <li><strong>Two Pair</strong> — Two different pairs (e.g., two 9s + two Queens). Odds: 1 in 21</li>
+          <li><strong>One Pair</strong> — A single pair. Odds: 1 in 2.4</li>
+          <li><strong>High Card</strong> — Nothing connects. Highest card plays. You'll have this roughly 50% of the time</li>
         </ol>
+
+        <h3>How a Hand Plays (4 Betting Rounds)</h3>
+        <ol>
+          <li><strong>Blinds:</strong> Two forced bets to create action. Small blind (left of dealer) and big blind (2x small blind) post before seeing cards</li>
+          <li><strong>Pre-Flop:</strong> You receive your 2 hole cards (face down — only you see them). First betting round. Action starts left of the big blind. You can fold, call, or raise</li>
+          <li><strong>The Flop:</strong> 3 community cards dealt face-up in the center. Second betting round. You now see 5 of your eventual 7 cards (71% of your hand). Re-evaluate: did the flop help you?</li>
+          <li><strong>The Turn:</strong> 4th community card dealt. Third betting round. Bets typically double here. Pot odds become critical</li>
+          <li><strong>The River:</strong> 5th and final community card. Last betting round. All information is out — you either have it or you're bluffing</li>
+          <li><strong>Showdown:</strong> Remaining players reveal cards. Best 5-card hand (from any combination of your 2 + the 5 community cards) wins the pot</li>
+        </ol>
+
+        <h3>Your Options Each Round</h3>
+        <ul>
+          <li><strong>Check:</strong> Pass the action (only if no one has bet). Free to see the next card</li>
+          <li><strong>Call:</strong> Match the current bet to stay in the hand</li>
+          <li><strong>Raise:</strong> Increase the bet — forces everyone to put in more or fold. Shows strength (or a good bluff)</li>
+          <li><strong>Fold:</strong> Surrender your cards and forfeit anything you've already put in the pot. You're done for this hand</li>
+          <li><strong>All-In:</strong> Push all your chips into the pot. You can't be bet out of the hand — a side pot is created if others keep betting</li>
+        </ul>
+
+        <h3>Key Strategy Concepts</h3>
+        <ul>
+          <li><strong>Fold most hands.</strong> Professional players fold 70-85% of hands pre-flop. Discipline separates winners from losers. "Tight is right"</li>
+          <li><strong>Position is power.</strong> Acting last (being "on the button") is the biggest advantage in poker. You see what everyone else does before you decide. Play more hands in late position, fewer in early position</li>
+          <li><strong>Premium starting hands:</strong> AA, KK, QQ, JJ, AK suited — raise with these every time regardless of position</li>
+          <li><strong>Playable hands:</strong> TT-77, AQ, AJ, KQ, suited connectors (like 8-9 of hearts) — play these in position</li>
+          <li><strong>Trash hands:</strong> 7-2 offsuit is statistically the worst hand. Fold any unconnected, unsuited low cards</li>
+          <li><strong>Pot odds:</strong> If the pot is $100 and it costs $20 to call, you're getting 5:1 odds. You only need to win 1 in 6 times to profit. Compare pot odds to your odds of making your hand</li>
+          <li><strong>"The flop fits or it doesn't."</strong> If the flop doesn't help your hand, be willing to let it go. Don't chase bad draws</li>
+          <li><strong>Bet sizing:</strong> Standard raises are 2.5-3x the big blind pre-flop. On the flop, bet 50-75% of the pot. Overbetting or underbetting gives away information</li>
+          <li><strong>Bluffing:</strong> Works best against one opponent, in position, when the board looks scary (like three suited cards or connected cards). Don't bluff calling stations (players who never fold)</li>
+          <li><strong>"If you can't spot the sucker at the table, you're the sucker."</strong> — Rounders</li>
+        </ul>
+
+        <h3>Poker Vocabulary</h3>
+        <ul>
+          <li><strong>Hole Cards:</strong> Your 2 private cards that only you can see</li>
+          <li><strong>Community Cards (The Board):</strong> The 5 shared cards in the center</li>
+          <li><strong>The Nuts:</strong> The best possible hand given the current board. "I flopped the nuts!"</li>
+          <li><strong>Drawing Dead:</strong> No card on the turn or river can save you. The worst feeling in poker</li>
+          <li><strong>Outs:</strong> Cards remaining in the deck that will complete your hand. Example: you have 4 hearts (flush draw) = 9 outs (13 hearts total minus your 4)</li>
+          <li><strong>The Rule of 2 and 4:</strong> Multiply your outs by 2 (one card to come) or 4 (two cards to come) to estimate your percentage chance of hitting. 9 outs with 2 cards = ~36% chance of hitting your flush</li>
+          <li><strong>Pot Committed:</strong> You've put so much in the pot that folding no longer makes mathematical sense</li>
+          <li><strong>Tilt:</strong> Playing emotionally (usually after a bad beat). Making poor decisions because you're angry or frustrated. The biggest leak in poker. "Don't play on tilt"</li>
+          <li><strong>Bad Beat:</strong> Losing a hand where you were a heavy statistical favorite. Example: your AA loses to 7-2 when the board comes 7-7-2. It happens — variance is part of the game</li>
+          <li><strong>Cooler:</strong> A hand where both players have very strong hands and losing is inevitable regardless of how you play. Example: your KK vs. opponent's AA. "That's just a cooler"</li>
+          <li><strong>Slow Play:</strong> Under-representing a strong hand to keep opponents in (checking or just calling instead of raising). Dangerous — can let opponents draw out on you</li>
+          <li><strong>Value Bet:</strong> Betting with a hand you believe is the best, hoping a weaker hand calls. The primary way you make money in poker</li>
+          <li><strong>C-Bet (Continuation Bet):</strong> Betting the flop after you were the pre-flop raiser, regardless of whether the flop helped you. Shows continued strength</li>
+          <li><strong>Fish:</strong> A weak or inexperienced player. "The table was full of fish"</li>
+          <li><strong>Shark:</strong> A skilled, dangerous player who profits from weaker opponents</li>
+          <li><strong>Donkey (Donk):</strong> A player who makes consistently bad plays</li>
+        </ul>
       </div>
       <div id="poker-tip" class="tip-box"></div>
     </div>

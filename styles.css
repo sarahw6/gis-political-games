@@ -72,8 +72,16 @@ h1{text-align:center;margin-bottom:1.5rem;font-size:1.8rem;background:linear-gra
 .game-tab:hover,.game-tab.active{background:#4a3a6e;color:#fff}
 .game-area{display:none}
 .game-area.active{display:block}
-.lesson-panel{background:linear-gradient(135deg,#1a1a3e,#151530);border-radius:10px;padding:1rem 1.25rem;margin-bottom:1rem;border:1px solid #4a3a6e;font-size:.9rem;line-height:1.6}
+.lesson-panel{background:linear-gradient(135deg,#1a1a3e,#151530);border-radius:10px;padding:1rem 1.25rem;margin-bottom:1rem;border:1px solid #4a3a6e;font-size:.9rem;line-height:1.6;max-height:500px;overflow-y:auto}
 .lesson-panel h2{color:#00d4ff;margin-bottom:.5rem}
+.lesson-panel h3{color:#a855f7;margin:.8rem 0 .35rem;font-size:.95rem}
+.lesson-panel h4{color:#00d4ff;margin:.6rem 0 .25rem;font-size:.88rem}
+.lesson-panel ul,.lesson-panel ol{padding-left:1.2rem;font-size:.84rem;line-height:1.55}
+.lesson-panel ul ul{margin-top:.15rem}
+.lesson-panel li{margin-bottom:.25rem}
+.lesson-panel li strong{color:#00d4ff}
+.lesson-panel li em{color:#fcd34d}
+.lesson-panel p{font-size:.85rem;line-height:1.5;margin-bottom:.4rem}
 .tip-box{margin-top:.75rem;padding:.75rem;background:#f59e0b18;border:1px solid #f59e0b55;border-radius:6px;color:#fcd34d;font-size:.85rem}
 
 /* Golf */
@@ -101,6 +109,25 @@ h1{text-align:center;margin-bottom:1.5rem;font-size:1.8rem;background:linear-gra
 .golf-vocab li{margin-bottom:.35rem;font-size:.82rem;line-height:1.45;break-inside:avoid}
 .golf-vocab li strong{color:#00d4ff}
 .golf-vocab li em{color:#fcd34d}
+.golf-section-tabs{display:flex;gap:.4rem;margin:1rem 0 .75rem;flex-wrap:wrap}
+.golf-sec-tab{padding:.35rem .9rem;border:1px solid #4a3a6e;background:transparent;color:#aaa;border-radius:5px;cursor:pointer;font-size:.82rem;transition:.2s}
+.golf-sec-tab:hover,.golf-sec-tab.active{background:#4a3a6e;color:#fff}
+.golf-sec{display:none}
+.golf-sec.active{display:block}
+.golf-sec h3{color:#a855f7;margin:.9rem 0 .4rem;font-size:.95rem}
+.golf-sec h4{color:#00d4ff;margin:.75rem 0 .3rem;font-size:.88rem}
+.golf-sec ul,.golf-sec ol{padding-left:1.2rem;font-size:.84rem;line-height:1.55}
+.golf-sec ul ul{margin-top:.2rem}
+.golf-sec li{margin-bottom:.3rem}
+.golf-sec li strong{color:#00d4ff}
+.golf-sec li em{color:#fcd34d}
+.golf-sec p{font-size:.85rem;line-height:1.5;margin-bottom:.5rem}
+.golf-sec table{margin:.5rem 0}
+.golf-diag-table{width:100%;border-collapse:collapse;font-size:.8rem;margin:.75rem 0}
+.golf-diag-table th{background:#4a3a6e;color:#fff;padding:.45rem .6rem;text-align:left;font-weight:600}
+.golf-diag-table td{padding:.4rem .6rem;border-bottom:1px solid #4a3a6e33;vertical-align:top;line-height:1.45}
+.golf-diag-table tr:nth-child(even){background:#ffffff06}
+.golf-diag-table tr:hover{background:#4a3a6e22}
 
 /* Blackjack */
 .bj-table{text-align:center;padding:1.5rem;background:linear-gradient(135deg,#0f4f0f,#1a3a1a);border-radius:14px;border:3px solid #2d8c2d}

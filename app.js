@@ -8,6 +8,15 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
     if (btn.dataset.section === 'gis' && !window._mapInit) initMap();
   });
 });
+// Golf lesson sub-tabs
+document.querySelectorAll('.golf-sec-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.golf-sec-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.golf-sec').forEach(s => s.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('golfsec-'+tab.dataset.golfsec).classList.add('active');
+  });
+});
 document.querySelectorAll('.game-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.game-tab').forEach(t => t.classList.remove('active'));
