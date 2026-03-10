@@ -1,0 +1,122 @@
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0a0a1a;color:#e0e0e0;min-height:100vh}
+#main-nav{display:flex;align-items:center;gap:1rem;padding:.75rem 1.5rem;background:linear-gradient(135deg,#1a1a3e,#2a1a4e);border-bottom:2px solid #4a3a6e;position:sticky;top:0;z-index:1000;flex-wrap:wrap}
+.nav-brand{font-size:1.5rem;font-weight:700;background:linear-gradient(90deg,#00d4ff,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:.5rem;flex-wrap:wrap}
+.nav-btn{padding:.5rem 1rem;border:1px solid #4a3a6e;background:transparent;color:#ccc;border-radius:6px;cursor:pointer;transition:.3s}
+.nav-btn:hover,.nav-btn.active{background:#4a3a6e;color:#fff}
+.section{display:none;padding:1.5rem;max-width:1400px;margin:0 auto}
+.section.active{display:block}
+h1{text-align:center;margin-bottom:1.5rem;font-size:1.8rem;background:linear-gradient(90deg,#00d4ff,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+/* GIS */
+.gis-controls{display:flex;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;justify-content:center}
+.gis-controls select{padding:.4rem;background:#1a1a3e;color:#e0e0e0;border:1px solid #4a3a6e;border-radius:4px}
+#map{height:500px;border-radius:10px;border:2px solid #4a3a6e}
+#gis-info-panel{margin-top:1rem;padding:1.25rem;background:linear-gradient(135deg,#1a1a3e,#151530);border-radius:10px;border:1px solid #4a3a6e;min-height:120px}
+#gis-info-panel h3{color:#00d4ff;margin-bottom:.5rem}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:.75rem}
+.info-card{padding:.75rem;background:rgba(74,58,110,.3);border-radius:8px;border-left:3px solid #a855f7}
+.info-card h4{color:#a855f7;margin-bottom:.4rem;font-size:.95rem}
+
+/* Philosophy */
+.phil-controls{display:flex;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;justify-content:center}
+.phil-controls select{padding:.4rem;background:#1a1a3e;color:#e0e0e0;border:1px solid #4a3a6e;border-radius:4px}
+#philosophy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.25rem}
+.phil-card{background:linear-gradient(135deg,#1a1a3e,#151530);border-radius:12px;padding:1.25rem;border:1px solid #4a3a6e;transition:transform .3s}
+.phil-card:hover{transform:translateY(-4px)}
+.phil-card .philosopher{font-size:1.1rem;font-weight:700;color:#00d4ff;margin-bottom:.15rem}
+.phil-card .dates{font-size:.8rem;color:#888;margin-bottom:.5rem}
+.phil-card .tradition-tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.75rem;margin-bottom:.5rem}
+.tradition-tag.western{background:#2563eb33;color:#60a5fa;border:1px solid #2563eb}
+.tradition-tag.eastern{background:#dc262633;color:#f87171;border:1px solid #dc2626}
+.phil-card .stance{font-size:.85rem;color:#ccc;margin-bottom:.5rem}
+.phil-card .quote{font-style:italic;color:#a78bfa;border-left:2px solid #a855f7;padding-left:.75rem;margin-top:.5rem;font-size:.9rem}
+
+/* Political Ideas */
+.pol-controls{display:flex;gap:1rem;margin-bottom:1.5rem;justify-content:center}
+.pol-controls select{padding:.4rem;background:#1a1a3e;color:#e0e0e0;border:1px solid #4a3a6e;border-radius:4px}
+#ideology-spectrum{display:grid;gap:1.25rem}
+.ideology-row{display:grid;grid-template-columns:180px 1fr;gap:1rem;align-items:start;padding:1rem;background:linear-gradient(135deg,#1a1a3e,#151530);border-radius:10px;border:1px solid #4a3a6e}
+.ideology-label{font-weight:700;font-size:1rem;padding:.4rem .75rem;border-radius:6px;text-align:center}
+.ideo-far-left{background:#b91c1c33;color:#f87171;border:1px solid #b91c1c}
+.ideo-left{background:#dc262633;color:#fca5a5;border:1px solid #dc2626}
+.ideo-center-left{background:#f59e0b33;color:#fcd34d;border:1px solid #f59e0b}
+.ideo-center{background:#6b728033;color:#d1d5db;border:1px solid #6b7280}
+.ideo-center-right{background:#3b82f633;color:#93c5fd;border:1px solid #3b82f6}
+.ideo-right{background:#1d4ed833;color:#60a5fa;border:1px solid #1d4ed8}
+.ideo-far-right{background:#1e3a5f33;color:#7dd3fc;border:1px solid #1e3a5f}
+.ideo-libertarian{background:#f59e0b33;color:#fde68a;border:1px solid #f59e0b}
+.ideology-content{font-size:.9rem;line-height:1.5}
+.ideology-content strong{color:#a855f7}
+
+/* Court Cases */
+.court-controls{display:flex;gap:1rem;margin-bottom:1.5rem;justify-content:center}
+.court-controls select{padding:.4rem;background:#1a1a3e;color:#e0e0e0;border:1px solid #4a3a6e;border-radius:4px}
+#court-cases-list{display:grid;gap:1.5rem}
+.court-case{background:linear-gradient(135deg,#1a1a3e,#151530);border-radius:12px;padding:1.5rem;border:1px solid #4a3a6e}
+.court-case h3{color:#00d4ff;margin-bottom:.25rem}
+.court-case .case-year{color:#888;font-size:.85rem;margin-bottom:.75rem}
+.court-case .case-summary{margin-bottom:1rem;line-height:1.5;font-size:.9rem}
+.perspectives{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.perspective{padding:1rem;border-radius:8px;font-size:.88rem;line-height:1.5}
+.perspective h4{margin-bottom:.5rem;font-size:1rem}
+.perspective.conservative{background:#1d4ed822;border:1px solid #1d4ed8}
+.perspective.conservative h4{color:#60a5fa}
+.perspective.liberal{background:#dc262622;border:1px solid #dc2626}
+.perspective.liberal h4{color:#f87171}
+
+/* Games shared */
+.game-tabs{display:flex;gap:.5rem;margin-bottom:1rem;justify-content:center}
+.game-tab{padding:.5rem 1.5rem;border:1px solid #4a3a6e;background:transparent;color:#ccc;border-radius:6px;cursor:pointer;transition:.3s;font-size:1rem}
+.game-tab:hover,.game-tab.active{background:#4a3a6e;color:#fff}
+.game-area{display:none}
+.game-area.active{display:block}
+.lesson-panel{background:linear-gradient(135deg,#1a1a3e,#151530);border-radius:10px;padding:1rem 1.25rem;margin-bottom:1rem;border:1px solid #4a3a6e;font-size:.9rem;line-height:1.6}
+.lesson-panel h2{color:#00d4ff;margin-bottom:.5rem}
+.tip-box{margin-top:.75rem;padding:.75rem;background:#f59e0b18;border:1px solid #f59e0b55;border-radius:6px;color:#fcd34d;font-size:.85rem}
+
+/* Golf */
+#golf-canvas{display:block;margin:0 auto;background:#1a5c1a;border-radius:10px;border:2px solid #2d8c2d;max-width:100%}
+.golf-controls-panel{text-align:center;margin-top:.75rem;display:flex;flex-direction:column;gap:.5rem;align-items:center}
+.golf-controls-panel label,.golf-controls-panel select{margin:0 .5rem}
+.golf-controls-panel button{padding:.4rem 1.2rem;background:#2563eb;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.9rem}
+.golf-controls-panel button:hover{background:#3b82f6}
+.golf-controls-panel input[type=range]{width:100px;vertical-align:middle}
+.golf-tips{margin-top:.5rem;font-size:.85rem;color:#86efac}
+
+/* Blackjack */
+.bj-table{text-align:center;padding:1.5rem;background:linear-gradient(135deg,#0f4f0f,#1a3a1a);border-radius:14px;border:3px solid #2d8c2d}
+.bj-hand{margin:1rem 0}
+.bj-hand h3{color:#86efac;margin-bottom:.5rem}
+.card-row{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;min-height:90px}
+.card{width:60px;height:85px;background:#fff;color:#333;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;box-shadow:0 2px 8px #0005;border:1px solid #ddd}
+.card.red{color:#dc2626}
+.card.hidden-card{background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:transparent}
+.bj-actions{margin:1rem 0;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap}
+.bj-actions button,.poker-actions button{padding:.5rem 1.2rem;border:none;border-radius:6px;cursor:pointer;font-size:.9rem;font-weight:600;transition:.2s}
+#bj-deal,#poker-deal{background:#2563eb;color:#fff}
+#bj-hit{background:#16a34a;color:#fff}
+#bj-stand,#poker-check{background:#dc2626;color:#fff}
+#bj-double,#poker-raise{background:#f59e0b;color:#000}
+#poker-call{background:#16a34a;color:#fff}
+#poker-fold{background:#dc2626;color:#fff}
+button:disabled{opacity:.4;cursor:not-allowed}
+.result-msg{font-size:1.3rem;font-weight:700;margin:.75rem 0;min-height:1.5rem}
+
+/* Poker */
+.poker-table{text-align:center;padding:1.5rem;background:linear-gradient(135deg,#0f4f0f,#1a3a1a);border-radius:14px;border:3px solid #2d8c2d}
+.community-cards{margin:1rem 0}
+.community-cards h3{color:#86efac;margin-bottom:.5rem}
+.poker-players{display:flex;justify-content:center;gap:3rem;margin:1rem 0;flex-wrap:wrap}
+.poker-hand h3{color:#86efac;margin-bottom:.5rem}
+.poker-actions{margin:1rem 0;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap}
+#poker-stage-info{color:#fcd34d;font-size:.9rem;margin:.5rem 0}
+
+@media(max-width:768px){
+  .perspectives{grid-template-columns:1fr}
+  .info-grid{grid-template-columns:1fr}
+  .ideology-row{grid-template-columns:1fr}
+  #map{height:350px}
+  #golf-canvas{width:100%;height:300px}
+}

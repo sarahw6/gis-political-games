@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GIS Historical & Political Philosophy Interactive Platform</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<nav id="main-nav">
+  <div class="nav-brand">GeoPhilosophy</div>
+  <div class="nav-links">
+    <button class="nav-btn active" data-section="gis">GIS & History</button>
+    <button class="nav-btn" data-section="philosophy">Philosophy</button>
+    <button class="nav-btn" data-section="politics">Political Ideas</button>
+    <button class="nav-btn" data-section="court">Court Cases</button>
+    <button class="nav-btn" data-section="games">Games</button>
+  </div>
+</nav>
+
+<!-- GIS SECTION -->
+<section id="gis" class="section active">
+  <h1>Historical GIS: Development of Civilizations</h1>
+  <div class="gis-controls">
+    <label>Era: <select id="era-select">
+      <option value="ancient">Ancient (3000 BCE - 500 CE)</option>
+      <option value="medieval">Medieval (500 - 1500)</option>
+      <option value="early-modern">Early Modern (1500 - 1800)</option>
+      <option value="modern">Modern (1800 - Present)</option>
+    </select></label>
+    <label>Layer: <select id="layer-select">
+      <option value="economic">Economic Systems</option>
+      <option value="religion">Religions</option>
+      <option value="markets">Market Styles</option>
+      <option value="society">Social Structures</option>
+    </select></label>
+  </div>
+  <div id="map"></div>
+  <div id="gis-info-panel">
+    <h3 id="info-title">Select a region on the map</h3>
+    <div id="info-content">Click any highlighted region to explore its historical economic, religious, and social development.</div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY SECTION -->
+<section id="philosophy" class="section">
+  <h1>Political Philosophy: East Meets West</h1>
+  <div class="phil-controls">
+    <label>Topic: <select id="phil-topic">
+      <option value="justice">Justice & Law</option>
+      <option value="liberty">Liberty & Freedom</option>
+      <option value="equality">Equality & Rights</option>
+      <option value="power">Power & Authority</option>
+      <option value="economics">Economic Justice</option>
+      <option value="war">War & Peace</option>
+      <option value="environment">Environment & Nature</option>
+      <option value="education">Education & Knowledge</option>
+    </select></label>
+    <label>Tradition: <select id="phil-tradition">
+      <option value="all">All Traditions</option>
+      <option value="western">Western</option>
+      <option value="eastern">Eastern</option>
+    </select></label>
+  </div>
+  <div id="philosophy-grid"></div>
+</section>
+
+<!-- POLITICAL IDEAS SECTION -->
+<section id="politics" class="section">
+  <h1>Political Ideologies Compared</h1>
+  <div class="pol-controls">
+    <label>Issue: <select id="pol-issue">
+      <option value="economy">Economy</option>
+      <option value="healthcare">Healthcare</option>
+      <option value="education">Education</option>
+      <option value="immigration">Immigration</option>
+      <option value="guns">Gun Policy</option>
+      <option value="environment">Environment</option>
+      <option value="foreign">Foreign Policy</option>
+      <option value="rights">Civil Rights</option>
+    </select></label>
+  </div>
+  <div id="ideology-spectrum"></div>
+</section>
+
+<!-- COURT CASES SECTION -->
+<section id="court" class="section">
+  <h1>Landmark Court Cases: Conservative vs Liberal Perspectives</h1>
+  <div class="court-controls">
+    <label>Category: <select id="court-category">
+      <option value="all">All Categories</option>
+      <option value="rights">Civil Rights</option>
+      <option value="speech">Free Speech</option>
+      <option value="religion">Religion</option>
+      <option value="privacy">Privacy</option>
+      <option value="commerce">Commerce</option>
+      <option value="executive">Executive Power</option>
+    </select></label>
+  </div>
+  <div id="court-cases-list"></div>
+</section>
+
+<!-- GAMES SECTION -->
+<section id="games" class="section">
+  <h1>Learn & Play: Interactive Games</h1>
+  <div class="game-tabs">
+    <button class="game-tab active" data-game="golf">Golf</button>
+    <button class="game-tab" data-game="blackjack">Blackjack</button>
+    <button class="game-tab" data-game="poker">Poker</button>
+  </div>
+
+  <!-- GOLF -->
+  <div id="golf-game" class="game-area active">
+    <div class="lesson-panel">
+      <h2>Golf Academy</h2>
+      <div id="golf-lesson">
+        <p><strong>Welcome to Golf!</strong> Golf is played over 18 holes. The goal: get the ball in the hole in as few strokes as possible.</p>
+        <p>Key concepts: <em>Par</em> (expected strokes), <em>Birdie</em> (-1), <em>Bogey</em> (+1), <em>Eagle</em> (-2)</p>
+      </div>
+      <div class="golf-tips" id="golf-tips"></div>
+    </div>
+    <canvas id="golf-canvas" width="700" height="450"></canvas>
+    <div class="golf-controls-panel">
+      <div>Hole: <span id="golf-hole">1</span>/9 | Par: <span id="golf-par">4</span> | Strokes: <span id="golf-strokes">0</span> | Total: <span id="golf-total">0</span></div>
+      <div>
+        <label>Power: <input type="range" id="golf-power" min="10" max="100" value="50"></label>
+        <label>Angle: <input type="range" id="golf-angle" min="-45" max="45" value="0"></label>
+        <label>Club: <select id="golf-club">
+          <option value="driver">Driver (max distance)</option>
+          <option value="iron">Iron (medium)</option>
+          <option value="wedge">Wedge (short/loft)</option>
+          <option value="putter">Putter (green only)</option>
+        </select></label>
+        <button id="golf-swing">Swing!</button>
+        <button id="golf-reset">New Round</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLACKJACK -->
+  <div id="blackjack-game" class="game-area">
+    <div class="lesson-panel">
+      <h2>Blackjack School</h2>
+      <div id="bj-lesson">
+        <p><strong>Goal:</strong> Get closer to 21 than the dealer without going over (busting).</p>
+        <p>Face cards = 10, Aces = 1 or 11. Dealer must hit on 16 or less, stand on 17+.</p>
+      </div>
+      <div id="bj-tip" class="tip-box"></div>
+    </div>
+    <div class="bj-table">
+      <div class="bj-hand">
+        <h3>Dealer <span id="dealer-score"></span></h3>
+        <div id="dealer-cards" class="card-row"></div>
+      </div>
+      <div class="bj-hand">
+        <h3>You <span id="player-score"></span></h3>
+        <div id="player-cards" class="card-row"></div>
+      </div>
+      <div id="bj-result" class="result-msg"></div>
+      <div class="bj-actions">
+        <button id="bj-deal">Deal</button>
+        <button id="bj-hit" disabled>Hit</button>
+        <button id="bj-stand" disabled>Stand</button>
+        <button id="bj-double" disabled>Double Down</button>
+      </div>
+      <div>Chips: $<span id="bj-chips">1000</span> | Bet: $<span id="bj-bet-display">25</span>
+        <label> Set Bet: <input type="number" id="bj-bet" value="25" min="5" max="500" step="5"></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- POKER -->
+  <div id="poker-game" class="game-area">
+    <div class="lesson-panel">
+      <h2>Texas Hold'em Poker School</h2>
+      <div id="poker-lesson">
+        <p><strong>Hand Rankings (high to low):</strong></p>
+        <ol>
+          <li>Royal Flush (A-K-Q-J-10 same suit)</li>
+          <li>Straight Flush (5 sequential, same suit)</li>
+          <li>Four of a Kind</li>
+          <li>Full House (3 of a kind + pair)</li>
+          <li>Flush (5 same suit)</li>
+          <li>Straight (5 sequential)</li>
+          <li>Three of a Kind</li>
+          <li>Two Pair</li>
+          <li>One Pair</li>
+          <li>High Card</li>
+        </ol>
+      </div>
+      <div id="poker-tip" class="tip-box"></div>
+    </div>
+    <div class="poker-table">
+      <div class="community-cards">
+        <h3>Community Cards</h3>
+        <div id="community-cards" class="card-row"></div>
+      </div>
+      <div class="poker-players">
+        <div class="poker-hand">
+          <h3>Opponent (CPU)</h3>
+          <div id="opp-cards" class="card-row"></div>
+        </div>
+        <div class="poker-hand">
+          <h3>Your Hand</h3>
+          <div id="your-cards" class="card-row"></div>
+        </div>
+      </div>
+      <div>Pot: $<span id="poker-pot">0</span> | Your Chips: $<span id="poker-chips">1000</span></div>
+      <div id="poker-result" class="result-msg"></div>
+      <div id="poker-stage-info"></div>
+      <div class="poker-actions">
+        <button id="poker-deal">Deal</button>
+        <button id="poker-call" disabled>Call</button>
+        <button id="poker-raise" disabled>Raise</button>
+        <button id="poker-fold" disabled>Fold</button>
+        <button id="poker-check" disabled>Check</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="app.js"></script>
+</body>
+</html>
