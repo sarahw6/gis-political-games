@@ -78,12 +78,29 @@ h1{text-align:center;margin-bottom:1.5rem;font-size:1.8rem;background:linear-gra
 
 /* Golf */
 #golf-canvas{display:block;margin:0 auto;background:#1a5c1a;border-radius:10px;border:2px solid #2d8c2d;max-width:100%}
-.golf-controls-panel{text-align:center;margin-top:.75rem;display:flex;flex-direction:column;gap:.5rem;align-items:center}
-.golf-controls-panel label,.golf-controls-panel select{margin:0 .5rem}
-.golf-controls-panel button{padding:.4rem 1.2rem;background:#2563eb;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.9rem}
-.golf-controls-panel button:hover{background:#3b82f6}
-.golf-controls-panel input[type=range]{width:100px;vertical-align:middle}
-.golf-tips{margin-top:.5rem;font-size:.85rem;color:#86efac}
+.golf-controls-panel{margin-top:.75rem;display:flex;flex-direction:column;gap:.75rem;padding:1rem;background:linear-gradient(135deg,#1a1a3e,#151530);border-radius:10px;border:1px solid #4a3a6e}
+.golf-scoreboard{display:flex;gap:1.25rem;justify-content:center;flex-wrap:wrap;font-size:.95rem}
+.golf-scoreboard strong{color:#00d4ff}
+.golf-club-controls{text-align:center}
+.golf-club-controls select{padding:.4rem;background:#0a0a1a;color:#e0e0e0;border:1px solid #4a3a6e;border-radius:4px;min-width:320px;font-size:.85rem}
+.golf-aim-controls{display:flex;gap:1.25rem;justify-content:center;flex-wrap:wrap;align-items:center}
+.golf-aim-controls label{display:flex;align-items:center;gap:.4rem;font-size:.88rem}
+.golf-aim-controls input[type=range]{width:140px;vertical-align:middle}
+.golf-aim-controls select{padding:.3rem;background:#0a0a1a;color:#e0e0e0;border:1px solid #4a3a6e;border-radius:4px;font-size:.82rem}
+.golf-aim-controls span{min-width:55px;color:#fcd34d;font-weight:600;font-size:.85rem}
+.golf-action-buttons{display:flex;gap:.75rem;justify-content:center}
+.golf-action-buttons button{padding:.5rem 1.5rem;border:none;border-radius:6px;cursor:pointer;font-size:1rem;font-weight:600;transition:.2s}
+#golf-swing{background:#16a34a;color:#fff;font-size:1.1rem}
+#golf-swing:hover{background:#22c55e}
+#golf-reset{background:#4a3a6e;color:#fff}
+#golf-reset:hover{background:#6d5a9e}
+.golf-tips{margin-top:.5rem;font-size:.9rem;color:#86efac;padding:.5rem .75rem;background:#16a34a18;border-radius:6px;min-height:1.5rem}
+.golf-vocab{margin-top:1rem}
+.golf-vocab h3{color:#a855f7;margin:.75rem 0 .35rem;font-size:.95rem}
+.golf-vocab ul{list-style:none;padding:0;columns:2;column-gap:1.5rem}
+.golf-vocab li{margin-bottom:.35rem;font-size:.82rem;line-height:1.45;break-inside:avoid}
+.golf-vocab li strong{color:#00d4ff}
+.golf-vocab li em{color:#fcd34d}
 
 /* Blackjack */
 .bj-table{text-align:center;padding:1.5rem;background:linear-gradient(135deg,#0f4f0f,#1a3a1a);border-radius:14px;border:3px solid #2d8c2d}

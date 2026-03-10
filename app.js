@@ -357,160 +357,567 @@ renderCourtCases();
 // ===================== GOLF GAME =====================
 const golfCanvas = document.getElementById('golf-canvas');
 const gCtx = golfCanvas?.getContext('2d');
-let golfState = {hole:1,strokes:0,total:0,ballX:80,ballY:350,holeX:600,holeY:120,inFlight:false,holes:[]};
+
+// Club data: maxYards, loft(height factor), accuracy(0-1, 1=perfect), canUseFrom
+const CLUBS = {
+  driver:   {name:'Driver (1W)',    yards:230, loft:0.25, accuracy:0.82, from:['tee'],         type:'wood'},
+  '3wood':  {name:'3-Wood',        yards:210, loft:0.30, accuracy:0.85, from:['tee','fairway'],type:'wood'},
+  '5wood':  {name:'5-Wood',        yards:195, loft:0.35, accuracy:0.87, from:['tee','fairway','rough'],type:'wood'},
+  '3hybrid':{name:'3-Hybrid',      yards:190, loft:0.38, accuracy:0.88, from:['tee','fairway','rough'],type:'hybrid'},
+  '4hybrid':{name:'4-Hybrid',      yards:180, loft:0.40, accuracy:0.89, from:['tee','fairway','rough','bunker'],type:'hybrid'},
+  '5iron':  {name:'5-Iron',        yards:170, loft:0.42, accuracy:0.85, from:['tee','fairway','rough'],type:'iron'},
+  '6iron':  {name:'6-Iron',        yards:160, loft:0.45, accuracy:0.87, from:['fairway','rough'],type:'iron'},
+  '7iron':  {name:'7-Iron',        yards:150, loft:0.50, accuracy:0.90, from:['tee','fairway','rough'],type:'iron'},
+  '8iron':  {name:'8-Iron',        yards:140, loft:0.55, accuracy:0.92, from:['fairway','rough'],type:'iron'},
+  '9iron':  {name:'9-Iron',        yards:130, loft:0.60, accuracy:0.93, from:['fairway','rough'],type:'iron'},
+  pw:       {name:'Pitching Wedge', yards:120, loft:0.68, accuracy:0.94, from:['fairway','rough','fringe'],type:'wedge'},
+  gw:       {name:'Gap Wedge (52°)',yards:100, loft:0.75, accuracy:0.95, from:['fairway','rough','fringe'],type:'wedge'},
+  sw:       {name:'Sand Wedge (56°)',yards:80, loft:0.85, accuracy:0.90, from:['fairway','rough','fringe','bunker'],type:'wedge'},
+  lw:       {name:'Lob Wedge (60°)',yards:60,  loft:0.95, accuracy:0.88, from:['fairway','rough','fringe','bunker'],type:'wedge'},
+  putter:   {name:'Putter',         yards:30,  loft:0.0,  accuracy:0.97, from:['green','fringe'],type:'putter'}
+};
+
+// Pixels-per-yard scale factor for the canvas
+const PX_PER_YARD = 2.2;
+
+let golfState = {
+  hole:1, strokes:0, total:0,
+  ballX:80, ballY:420,
+  inFlight:false, holes:[],
+  scores:[] // per-hole scores
+};
 
 function generateHoles(){
   golfState.holes = [];
-  for(let i=0;i<9;i++){
-    const par = [3,4,4,3,5,4,3,4,5][i];
-    const hx = 500+Math.random()*150;
-    const hy = 80+Math.random()*200;
-    const water = i>2 ? {x:250+Math.random()*100,y:150+Math.random()*150,w:80,h:50} : null;
-    const sand = i>1 ? {x:hx-60+Math.random()*40,y:hy-30+Math.random()*40,r:25} : null;
-    golfState.holes.push({par,hx,hy,water,sand});
-  }
+  const layouts = [
+    {par:3, hx:550, hy:150, dist:160, name:"The Opener"},
+    {par:4, hx:650, hy:120, dist:350, name:"Dogleg Right"},
+    {par:4, hx:620, hy:200, dist:380, name:"Water Carry"},
+    {par:3, hx:500, hy:100, dist:175, name:"Island Green"},
+    {par:5, hx:700, hy:130, dist:520, name:"The Monster"},
+    {par:4, hx:600, hy:180, dist:400, name:"Bunker Alley"},
+    {par:3, hx:480, hy:120, dist:145, name:"Short & Sweet"},
+    {par:4, hx:660, hy:160, dist:410, name:"The Ridge"},
+    {par:5, hx:720, hy:140, dist:490, name:"Finishing Hole"}
+  ];
+  layouts.forEach((l,i) => {
+    const hx = l.hx + (Math.random()*40-20);
+    const hy = l.hy + (Math.random()*30-15);
+    let water = null, sand = null, sand2 = null, tree = null;
+    // Add hazards based on hole
+    if(i>=2) water = {x:280+Math.random()*80, y:180+Math.random()*80, w:90+Math.random()*40, h:45+Math.random()*20};
+    if(i>=1) sand = {x:hx-50+Math.random()*30, y:hy+50+Math.random()*20, r:22+Math.random()*8};
+    if(i>=4) sand2 = {x:hx+40+Math.random()*20, y:hy-20+Math.random()*20, r:18+Math.random()*6};
+    if(i>=3) tree = {x:350+Math.random()*100, y:100+Math.random()*200};
+    golfState.holes.push({par:l.par, hx, hy, water, sand, sand2, tree, name:l.name, dist:l.dist});
+  });
 }
 generateHoles();
 
 function currentHoleData(){return golfState.holes[golfState.hole-1];}
 
-const golfTips = [
-  "Use the Driver for long tee shots on par 4s and 5s.",
-  "The Putter has low power but high accuracy — use it when you're close to the hole.",
-  "Wedges give the ball loft to clear obstacles like water and sand.",
-  "Adjust the angle slider to aim left or right of center.",
-  "In real golf: keep your head down, eye on the ball, smooth follow-through!",
-  "Par 3 = short hole (use iron/wedge). Par 5 = long hole (driver then irons).",
-  "Sand traps (bunkers) add penalty strokes. Use a wedge to escape!",
-  "Water hazards cost you a penalty stroke. Plan your shots to avoid them.",
-  "Real golf etiquette: don't talk during someone's swing, repair divots, rake bunkers."
-];
+function getBallLie(bx, by, h){
+  const distToHole = Math.hypot(bx-h.hx, by-h.hy);
+  if(distToHole < 50) return 'green';
+  if(distToHole < 70) return 'fringe';
+  // Check bunker
+  if(h.sand && Math.hypot(bx-h.sand.x, by-h.sand.y) < h.sand.r) return 'bunker';
+  if(h.sand2 && Math.hypot(bx-h.sand2.x, by-h.sand2.y) < h.sand2.r) return 'bunker';
+  // Check fairway (simplified polygon check using distance to center line)
+  const cx = (80 + h.hx)/2, cy = (420 + h.hy)/2;
+  const lineAngle = Math.atan2(h.hy-420, h.hx-80);
+  const perpDist = Math.abs(Math.sin(lineAngle)*(bx-80) - Math.cos(lineAngle)*(by-420));
+  if(perpDist < 55) return 'fairway';
+  // First shot
+  if(Math.hypot(bx-80, by-420) < 20) return 'tee';
+  return 'rough';
+}
 
+function distYards(x1,y1,x2,y2){ return Math.hypot(x2-x1,y2-y1)/PX_PER_YARD; }
+
+// -------- PRO TIPS based on situation --------
+const proTips = {
+  tee_par3: [
+    '"Take dead aim." — Harvey Penick. On a par 3, pick your club to land center-green.',
+    'Par 3 strategy: club selection is everything. Most amateurs under-club. Take one more club than you think.',
+    '"The most important shot in golf is the next one." — Ben Hogan. Smooth tempo off the tee.'
+  ],
+  tee_par4: [
+    '"Swing easy, hit hard." Hit the fairway first — position beats distance on par 4s.',
+    'Driver isn\'t always the play. A 3-wood in the fairway beats a driver in the rough.',
+    '"Drive for show, putt for dough." — Bobby Locke. But a good drive sets up everything.'
+  ],
+  tee_par5: [
+    'Par 5s are birdie opportunities. Grip it and rip it — get maximum distance off the tee.',
+    '"The woods are full of long hitters." — Harvey Penick. Fairway position matters even on par 5s.',
+    'Par 5 strategy: plan your three shots backward from the green.'
+  ],
+  fairway: [
+    'You\'re sitting pretty in the fairway! Pick a club that reaches the green. Aim for the fat part.',
+    '"Aim for the center of the green. The pin will come to you." — Jack Nicklaus',
+    'From the fairway, commit to your club. Indecision is the #1 cause of bad approach shots.'
+  ],
+  rough: [
+    'In the rough — take more club (one up). The grass grabs the clubhead and reduces distance.',
+    '"When you\'re in the rough, just get back to the fairway." — Tiger Woods. Don\'t be a hero.',
+    'Rough lie = less control. A hybrid or 5-wood cuts through rough better than long irons.'
+  ],
+  bunker: [
+    'Bunker shot! Open the face of your sand wedge, aim 2 inches behind the ball, and splash through.',
+    '"The bunker shot is the easiest shot in golf — you don\'t even have to hit the ball." — Gary Player',
+    'In a greenside bunker: open stance, open face, hit the sand not the ball. Follow through!'
+  ],
+  green: [
+    'On the green! Read the break. "Every putt is straight — you just have to find the line." — Jack Nicklaus',
+    '"Putt like a kid — look at the hole, not the mechanics." Speed > line for most putts.',
+    'The golden rule of putting: never leave it short. "Never up, never in." — Old Scottish saying'
+  ],
+  fringe: [
+    'On the fringe — you can putt from here (smart play) or chip with a wedge for more control.',
+    '"When in doubt on the fringe, putt. Your worst putt beats your worst chip." — Common tour advice',
+    'From the fringe, a bump-and-run with a 7-iron or 8-iron is a high-percentage play.'
+  ],
+  water: [
+    'Splash! Water hazard. You take a 1-stroke penalty and drop behind the hazard. Plan the carry next time.',
+    '"Water attracts golf balls like a magnet. Lay up if there\'s any doubt." — Lee Trevino',
+    'Water hazard tip: if you need 180 yards to carry water and your club max is 175, LAY UP. Course management!'
+  ],
+  sand_hit: [
+    'In the bunker! Use your Sand Wedge (56°). Open the face, aim behind the ball.',
+    'Bunker play: dig your feet in for stability, keep your weight forward, accelerate through the sand.'
+  ],
+  approach: [
+    'This is your approach shot — the money shot. Pick a club that lands you pin-high.',
+    '"The approach shot separates the pros from the amateurs." Commit to your target and swing smooth.'
+  ]
+};
+
+function getProTip(lie, par, distToHole) {
+  let pool;
+  if(lie==='tee') pool = proTips['tee_par'+par] || proTips.tee_par4;
+  else pool = proTips[lie] || proTips.fairway;
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+
+// -------- DRAWING --------
 function drawGolf(){
   if(!gCtx) return;
-  const c = golfCanvas;
+  const c = golfCanvas, W=c.width, H=c.height;
   const h = currentHoleData();
-  // Fairway
-  gCtx.fillStyle='#2d8c2d';gCtx.fillRect(0,0,c.width,c.height);
-  // Rough edges
-  gCtx.fillStyle='#1a6b1a';gCtx.fillRect(0,0,c.width,40);gCtx.fillRect(0,c.height-40,c.width,40);
-  // Fairway path
-  gCtx.fillStyle='#3aaf3a';
-  gCtx.beginPath();gCtx.moveTo(40,c.height-60);gCtx.lineTo(200,c.height-100);
-  gCtx.lineTo(h.hx-30,h.hy+80);gCtx.lineTo(h.hx+60,h.hy+80);gCtx.lineTo(h.hx+80,h.hy-60);
-  gCtx.lineTo(200,60);gCtx.lineTo(40,80);gCtx.closePath();gCtx.fill();
+
+  // Background rough
+  gCtx.fillStyle='#1a6b1a'; gCtx.fillRect(0,0,W,H);
+
+  // Fairway path (wider, follows tee to hole)
+  const angle = Math.atan2(h.hy-420, h.hx-80);
+  const perpX = Math.sin(angle)*50, perpY = -Math.cos(angle)*50;
+  gCtx.fillStyle='#2d9c2d';
+  gCtx.beginPath();
+  gCtx.moveTo(80-perpX*0.6, 420-perpY*0.6);
+  gCtx.lineTo(80+perpX*0.6, 420+perpY*0.6);
+  // Midpoint — widen or curve for doglegs
+  const mx=(80+h.hx)/2+(h.hole===2?40:0), my=(420+h.hy)/2;
+  gCtx.lineTo(mx+perpX*1.1, my+perpY*1.1);
+  gCtx.lineTo(h.hx+perpX*0.8, h.hy+perpY*0.8);
+  gCtx.lineTo(h.hx-perpX*0.8, h.hy-perpY*0.8);
+  gCtx.lineTo(mx-perpX*1.1, my-perpY*1.1);
+  gCtx.closePath(); gCtx.fill();
+
   // Green
-  gCtx.fillStyle='#4ae04a';
-  gCtx.beginPath();gCtx.arc(h.hx,h.hy,55,0,Math.PI*2);gCtx.fill();
-  // Water
-  if(h.water){gCtx.fillStyle='#1e90ff88';gCtx.fillRect(h.water.x,h.water.y,h.water.w,h.water.h);
-    gCtx.strokeStyle='#1e90ff';gCtx.strokeRect(h.water.x,h.water.y,h.water.w,h.water.h);
-    gCtx.fillStyle='#fff';gCtx.font='11px sans-serif';gCtx.fillText('WATER',h.water.x+15,h.water.y+30);}
-  // Sand
-  if(h.sand){gCtx.fillStyle='#f5deb3';gCtx.beginPath();gCtx.arc(h.sand.x,h.sand.y,h.sand.r,0,Math.PI*2);gCtx.fill();
-    gCtx.fillStyle='#8B7355';gCtx.font='10px sans-serif';gCtx.fillText('SAND',h.sand.x-14,h.sand.y+4);}
-  // Hole flag
-  gCtx.fillStyle='#000';gCtx.beginPath();gCtx.arc(h.hx,h.hy,6,0,Math.PI*2);gCtx.fill();
-  gCtx.strokeStyle='#fff';gCtx.lineWidth=2;gCtx.beginPath();gCtx.moveTo(h.hx,h.hy);gCtx.lineTo(h.hx,h.hy-40);gCtx.stroke();
-  gCtx.fillStyle='#ff4444';gCtx.beginPath();gCtx.moveTo(h.hx,h.hy-40);gCtx.lineTo(h.hx+20,h.hy-32);gCtx.lineTo(h.hx,h.hy-24);gCtx.fill();
-  // Ball
-  gCtx.fillStyle='#fff';gCtx.beginPath();gCtx.arc(golfState.ballX,golfState.ballY,5,0,Math.PI*2);gCtx.fill();
-  gCtx.strokeStyle='#ccc';gCtx.lineWidth=1;gCtx.stroke();
+  gCtx.fillStyle='#3adf3a';
+  gCtx.beginPath(); gCtx.arc(h.hx, h.hy, 50, 0, Math.PI*2); gCtx.fill();
+  // Fringe ring
+  gCtx.strokeStyle='#30b830'; gCtx.lineWidth=12;
+  gCtx.beginPath(); gCtx.arc(h.hx, h.hy, 56, 0, Math.PI*2); gCtx.stroke();
+
+  // Trees
+  if(h.tree){
+    gCtx.fillStyle='#0a4a0a';
+    gCtx.beginPath(); gCtx.arc(h.tree.x, h.tree.y, 18, 0, Math.PI*2); gCtx.fill();
+    gCtx.fillStyle='#1a7a1a';
+    gCtx.beginPath(); gCtx.arc(h.tree.x, h.tree.y-8, 14, 0, Math.PI*2); gCtx.fill();
+    gCtx.fillStyle='#5a3';
+    gCtx.beginPath(); gCtx.arc(h.tree.x, h.tree.y-14, 10, 0, Math.PI*2); gCtx.fill();
+    gCtx.fillStyle='#4a2800'; gCtx.fillRect(h.tree.x-3, h.tree.y+12, 6, 12);
+  }
+
+  // Water hazard
+  if(h.water){
+    gCtx.fillStyle='#1e6fff55'; gCtx.strokeStyle='#1e90ff'; gCtx.lineWidth=2;
+    const wr=h.water;
+    gCtx.beginPath();
+    gCtx.ellipse(wr.x+wr.w/2, wr.y+wr.h/2, wr.w/2, wr.h/2, 0, 0, Math.PI*2);
+    gCtx.fill(); gCtx.stroke();
+    // Water ripples
+    gCtx.strokeStyle='#4ea8ff44'; gCtx.lineWidth=1;
+    for(let i=0;i<3;i++){
+      gCtx.beginPath();
+      gCtx.ellipse(wr.x+wr.w/2+i*8-8, wr.y+wr.h/2, 10+i*5, 4+i*2, 0, 0, Math.PI*2);
+      gCtx.stroke();
+    }
+    gCtx.fillStyle='#8bf'; gCtx.font='bold 11px sans-serif';
+    gCtx.fillText('WATER HAZARD', wr.x+wr.w/2-38, wr.y+wr.h+14);
+  }
+
+  // Bunkers
+  function drawBunker(b){
+    gCtx.fillStyle='#f5deb3';
+    gCtx.beginPath(); gCtx.arc(b.x, b.y, b.r, 0, Math.PI*2); gCtx.fill();
+    gCtx.strokeStyle='#c4a56a'; gCtx.lineWidth=2;
+    gCtx.beginPath(); gCtx.arc(b.x, b.y, b.r, 0, Math.PI*2); gCtx.stroke();
+    // Sand texture dots
+    gCtx.fillStyle='#d4c49a';
+    for(let i=0;i<5;i++){
+      const sx=b.x+Math.random()*b.r*1.2-b.r*0.6, sy=b.y+Math.random()*b.r*1.2-b.r*0.6;
+      gCtx.beginPath(); gCtx.arc(sx,sy,1.5,0,Math.PI*2); gCtx.fill();
+    }
+  }
+  if(h.sand) drawBunker(h.sand);
+  if(h.sand2) drawBunker(h.sand2);
+
   // Tee box
-  gCtx.fillStyle='#5a3';gCtx.fillRect(60,330,40,40);
-  // HUD
-  gCtx.fillStyle='#fff';gCtx.font='bold 14px sans-serif';
-  gCtx.fillText(`Hole ${golfState.hole}/9 | Par ${h.par} | Strokes: ${golfState.strokes}`,10,20);
-  // Power/angle indicator
-  const power = parseInt(document.getElementById('golf-power')?.value||50);
-  const angle = parseInt(document.getElementById('golf-angle')?.value||0);
-  const rad = (angle-90)*Math.PI/180;
-  const len = power*0.4;
-  gCtx.strokeStyle='#ff0';gCtx.lineWidth=2;gCtx.setLineDash([4,4]);
-  gCtx.beginPath();gCtx.moveTo(golfState.ballX,golfState.ballY);
-  gCtx.lineTo(golfState.ballX+Math.cos(rad)*len,golfState.ballY+Math.sin(rad)*len);gCtx.stroke();
-  gCtx.setLineDash([]);
+  gCtx.fillStyle='#4ac34a';
+  gCtx.fillRect(60, 405, 40, 30);
+  gCtx.strokeStyle='#2d8c2d'; gCtx.lineWidth=1;
+  gCtx.strokeRect(60, 405, 40, 30);
+  gCtx.fillStyle='#fff'; gCtx.font='9px sans-serif';
+  gCtx.fillText('TEE', 70, 424);
+
+  // Tee markers
+  gCtx.fillStyle='#ff4444';
+  gCtx.beginPath(); gCtx.arc(65, 410, 3, 0, Math.PI*2); gCtx.fill();
+  gCtx.beginPath(); gCtx.arc(95, 410, 3, 0, Math.PI*2); gCtx.fill();
+
+  // Hole + flag
+  gCtx.fillStyle='#111';
+  gCtx.beginPath(); gCtx.arc(h.hx, h.hy, 5, 0, Math.PI*2); gCtx.fill();
+  gCtx.strokeStyle='#ddd'; gCtx.lineWidth=2;
+  gCtx.beginPath(); gCtx.moveTo(h.hx, h.hy); gCtx.lineTo(h.hx, h.hy-45); gCtx.stroke();
+  gCtx.fillStyle='#ff3333';
+  gCtx.beginPath(); gCtx.moveTo(h.hx, h.hy-45); gCtx.lineTo(h.hx+22, h.hy-36); gCtx.lineTo(h.hx, h.hy-27); gCtx.fill();
+  gCtx.fillStyle='#fff'; gCtx.font='bold 9px sans-serif';
+  gCtx.fillText(golfState.hole+'', h.hx+5, h.hy-33);
+
+  // Yardage markers on fairway
+  const totalDist = Math.hypot(h.hx-80, h.hy-420);
+  [50,100,150,200].forEach(yd => {
+    const frac = (yd*PX_PER_YARD) / totalDist;
+    if(frac > 0 && frac < 1) {
+      const mx2 = h.hx + (80-h.hx)*frac, my2 = h.hy + (420-h.hy)*frac;
+      gCtx.fillStyle='#ffffff55'; gCtx.font='10px sans-serif';
+      gCtx.fillText(yd+'y', mx2-8, my2-8);
+      gCtx.fillStyle='#ffffff33';
+      gCtx.beginPath(); gCtx.arc(mx2,my2,3,0,Math.PI*2); gCtx.fill();
+    }
+  });
+
+  // Ball shadow
+  gCtx.fillStyle='#00000033';
+  gCtx.beginPath(); gCtx.ellipse(golfState.ballX+2, golfState.ballY+2, 6, 4, 0, 0, Math.PI*2); gCtx.fill();
+  // Ball
+  gCtx.fillStyle='#fff';
+  gCtx.beginPath(); gCtx.arc(golfState.ballX, golfState.ballY, 5, 0, Math.PI*2); gCtx.fill();
+  gCtx.strokeStyle='#ccc'; gCtx.lineWidth=0.5; gCtx.stroke();
+  // Ball dimple detail
+  gCtx.strokeStyle='#ddd'; gCtx.lineWidth=0.3;
+  gCtx.beginPath(); gCtx.arc(golfState.ballX-1, golfState.ballY-1, 2, 0, Math.PI*2); gCtx.stroke();
+
+  // Aim line — THIS IS THE KEY FIX: aim line shows exactly where the ball will go
+  if(!golfState.inFlight){
+    const aimAngle = getAimAngle();
+    const power = parseInt(document.getElementById('golf-power')?.value||75);
+    const clubKey = document.getElementById('golf-club')?.value||'7iron';
+    const club = CLUBS[clubKey];
+    const distPx = (club.yards * (power/100)) * PX_PER_YARD;
+    const lineLen = Math.min(distPx, 250); // cap visual length
+
+    // Dotted aim line
+    gCtx.strokeStyle='#ffff00aa'; gCtx.lineWidth=2; gCtx.setLineDash([6,4]);
+    gCtx.beginPath();
+    gCtx.moveTo(golfState.ballX, golfState.ballY);
+    gCtx.lineTo(
+      golfState.ballX + Math.cos(aimAngle)*lineLen,
+      golfState.ballY + Math.sin(aimAngle)*lineLen
+    );
+    gCtx.stroke(); gCtx.setLineDash([]);
+
+    // Landing zone circle
+    const landX = golfState.ballX + Math.cos(aimAngle)*distPx;
+    const landY = golfState.ballY + Math.sin(aimAngle)*distPx;
+    const accRadius = (1-club.accuracy)*80 + 5;
+    gCtx.strokeStyle='#ffff0066'; gCtx.lineWidth=1; gCtx.setLineDash([3,3]);
+    gCtx.beginPath(); gCtx.arc(landX,landY, accRadius, 0, Math.PI*2); gCtx.stroke();
+    gCtx.setLineDash([]);
+    // Landing dot
+    gCtx.fillStyle='#ffff0055';
+    gCtx.beginPath(); gCtx.arc(landX,landY, 3, 0, Math.PI*2); gCtx.fill();
+  }
+
+  // HUD on canvas
+  const lie = getBallLie(golfState.ballX, golfState.ballY, h);
+  const dToHole = distYards(golfState.ballX, golfState.ballY, h.hx, h.hy);
+  gCtx.fillStyle='#000000aa';
+  gCtx.fillRect(0,0,W,28);
+  gCtx.fillStyle='#fff'; gCtx.font='bold 13px sans-serif';
+  gCtx.fillText(`Hole ${golfState.hole}: "${h.name}" | Par ${h.par} | Stroke ${golfState.strokes} | ${Math.round(dToHole)} yds to pin | Lie: ${lie.toUpperCase()}`, 10, 18);
+}
+
+function getAimAngle(){
+  const h = currentHoleData();
+  const angleDeg = parseInt(document.getElementById('golf-angle')?.value||0);
+  // Base angle: from ball directly toward the hole
+  const baseAngle = Math.atan2(h.hy - golfState.ballY, h.hx - golfState.ballX);
+  // Player's aim offset in radians
+  const offsetRad = angleDeg * (Math.PI/180);
+  return baseAngle + offsetRad;
 }
 
 function swingGolf(){
   if(golfState.inFlight) return;
-  const power = parseInt(document.getElementById('golf-power').value);
-  const angleDeg = parseInt(document.getElementById('golf-angle').value);
-  const club = document.getElementById('golf-club').value;
   const h = currentHoleData();
-  let mult = {driver:1,iron:0.65,wedge:0.4,putter:0.2}[club];
-  const dist = power * mult * 4;
-  const dx = h.hx - golfState.ballX;
-  const dy = h.hy - golfState.ballY;
-  const targetAngle = Math.atan2(dy,dx);
-  const deviation = angleDeg * Math.PI/180;
-  const finalAngle = targetAngle + deviation;
-  const targetX = golfState.ballX + Math.cos(finalAngle)*dist;
-  const targetY = golfState.ballY + Math.sin(finalAngle)*dist;
+  const power = parseInt(document.getElementById('golf-power').value);
+  const clubKey = document.getElementById('golf-club').value;
+  const shape = document.getElementById('golf-shape').value;
+  const club = CLUBS[clubKey];
+  const lie = getBallLie(golfState.ballX, golfState.ballY, h);
+
+  // Check if club is appropriate for the lie
+  if(!club.from.includes(lie)){
+    const lieNames = {tee:'the tee box',fairway:'the fairway',rough:'the rough',bunker:'a bunker',green:'the green',fringe:'the fringe'};
+    showGolfTip(`Can't use ${club.name} from ${lieNames[lie]||lie}! ${lie==='green'?'Use your Putter on the green.':lie==='bunker'?'Use a Sand Wedge or Lob Wedge from bunkers.':'Choose a different club.'}`);
+    return;
+  }
+
+  // Calculate distance
+  let maxDist = club.yards * PX_PER_YARD;
+  let dist = maxDist * (power/100);
+
+  // Lie penalties
+  if(lie==='rough') dist *= 0.80; // lose 20% from rough
+  if(lie==='bunker') dist *= 0.55; // lose 45% from bunker
+
+  // Shot shape modifiers
+  let curveAngle = 0; // radians of curve applied during flight
+  let distMod = 1.0;
+  let loftMod = club.loft;
+  if(shape==='fade'){ curveAngle = 0.08; distMod = 0.95; } // slight right curve, less distance
+  if(shape==='draw'){ curveAngle = -0.08; distMod = 1.05; } // slight left curve, more roll
+  if(shape==='punch'){ loftMod = Math.max(0.05, club.loft*0.3); distMod = 0.85; } // low shot
+  if(shape==='flop'){ loftMod = Math.min(1.0, club.loft*1.5); distMod = 0.6; } // high soft shot
+  dist *= distMod;
+
+  // Accuracy — random scatter based on club accuracy and lie
+  let accPenalty = 0;
+  if(lie==='rough') accPenalty = 0.08;
+  if(lie==='bunker') accPenalty = 0.15;
+  const scatter = (1 - club.accuracy + accPenalty) * (Math.random()*2-1) * 0.15;
+
+  // Final aim angle
+  const aimAngle = getAimAngle() + scatter + curveAngle;
+
+  // Target position
+  const targetX = golfState.ballX + Math.cos(aimAngle)*dist;
+  const targetY = golfState.ballY + Math.sin(aimAngle)*dist;
+
   golfState.inFlight = true;
   golfState.strokes++;
-  let penalty = false;
-  // Check hazards
+
+  // Check for water hazard along flight path and at landing
+  let hitWater = false;
   if(h.water){
-    const wx=h.water.x,wy=h.water.y,ww=h.water.w,wh=h.water.h;
-    if(targetX>wx&&targetX<wx+ww&&targetY>wy&&targetY<wy+wh){penalty=true;}
-  }
-  // Animate
-  const startX=golfState.ballX,startY=golfState.ballY;
-  let t=0;
-  const anim=setInterval(()=>{
-    t+=0.03;
-    if(t>=1){t=1;clearInterval(anim);golfState.inFlight=false;
-      if(penalty){golfState.strokes++;golfState.ballX=startX;golfState.ballY=startY;
-        showGolfTip("Splash! Water hazard — 1 stroke penalty.");
-      } else {
-        golfState.ballX=targetX;golfState.ballY=targetY;
-        const distToHole=Math.hypot(golfState.ballX-h.hx,golfState.ballY-h.hy);
-        if(distToHole<15){holeComplete();}
-        else if(distToHole<60){showGolfTip("You're on the green! Use the putter for accuracy.");}
-        else {showGolfTip(golfTips[Math.floor(Math.random()*golfTips.length)]);}
+    const wcx=h.water.x+h.water.w/2, wcy=h.water.y+h.water.h/2;
+    const wrx=h.water.w/2, wry=h.water.h/2;
+    // Check landing point
+    const dx=(targetX-wcx)/wrx, dy=(targetY-wcy)/wry;
+    if(dx*dx+dy*dy < 1){
+      // High loft shots can carry over water
+      if(loftMod < 0.5){ hitWater = true; }
+      else {
+        // Check if ball path goes through water (low shots)
+        const frac = 0.5; // midpoint of flight
+        const midX=golfState.ballX+(targetX-golfState.ballX)*frac;
+        const midY=golfState.ballY+(targetY-golfState.ballY)*frac;
+        const mdx=(midX-wcx)/wrx, mdy=(midY-wcy)/wry;
+        if(mdx*mdx+mdy*mdy < 1 && loftMod < 0.4) hitWater = true;
       }
     }
-    golfState.ballX=startX+(targetX-startX)*t;
-    golfState.ballY=startY+(targetY-startY)*t;
-    drawGolf();
-  },30);
+    // Also check midpoint for low shots
+    if(!hitWater && loftMod < 0.35){
+      const frac=0.5;
+      const midX=golfState.ballX+(targetX-golfState.ballX)*frac;
+      const midY=golfState.ballY+(targetY-golfState.ballY)*frac;
+      const mdx=(midX-wcx)/wrx, mdy=(midY-wcy)/wry;
+      if(mdx*mdx+mdy*mdy < 1) hitWater = true;
+    }
+  }
+
+  // Check tree collision
+  let hitTree = false;
+  if(h.tree && loftMod < 0.5){
+    // Check if flight path passes near tree
+    const steps = 10;
+    for(let i=1;i<steps;i++){
+      const frac=i/steps;
+      const px=golfState.ballX+(targetX-golfState.ballX)*frac;
+      const py=golfState.ballY+(targetY-golfState.ballY)*frac;
+      if(Math.hypot(px-h.tree.x, py-h.tree.y) < 22){
+        hitTree = true; break;
+      }
+    }
+  }
+
+  // Animate the shot
+  const startX=golfState.ballX, startY=golfState.ballY;
+  let t=0;
+  const ballTrail = [];
+
+  const anim = setInterval(()=>{
+    t += 0.025;
+    if(t>=1){
+      t=1; clearInterval(anim); golfState.inFlight=false;
+
+      if(hitWater){
+        golfState.strokes++; // penalty stroke
+        // Drop behind water
+        golfState.ballX = startX + (targetX-startX)*0.3;
+        golfState.ballY = startY + (targetY-startY)*0.3;
+        showGolfTip(proTips.water[Math.floor(Math.random()*proTips.water.length)]);
+      } else if(hitTree){
+        // Ball deflects and goes short
+        golfState.ballX = startX + (targetX-startX)*0.25 + (Math.random()*30-15);
+        golfState.ballY = startY + (targetY-startY)*0.25 + (Math.random()*30-15);
+        showGolfTip('"The trees are 90% air." — Old golf joke. But yours found the 10%. Ball deflected into the rough.');
+      } else {
+        golfState.ballX = targetX;
+        golfState.ballY = targetY;
+        // Clamp to canvas
+        golfState.ballX = Math.max(10, Math.min(golfCanvas.width-10, golfState.ballX));
+        golfState.ballY = Math.max(10, Math.min(golfCanvas.height-10, golfState.ballY));
+
+        const distToHole = Math.hypot(golfState.ballX-h.hx, golfState.ballY-h.hy);
+        if(distToHole < 8){
+          holeComplete(); return;
+        }
+        // Contextual tip based on new lie
+        const newLie = getBallLie(golfState.ballX, golfState.ballY, h);
+        const dYards = distYards(golfState.ballX, golfState.ballY, h.hx, h.hy);
+        showGolfTip(getProTip(newLie, h.par, dYards) + ` (${Math.round(dYards)} yards to pin)`);
+      }
+      updateGolfUI(); drawGolf();
+    } else {
+      // Animated position with arc
+      const arcHeight = loftMod * 60 * Math.sin(t * Math.PI); // ball rises and falls
+      golfState.ballX = startX + (targetX-startX)*t;
+      golfState.ballY = startY + (targetY-startY)*t - arcHeight;
+      ballTrail.push({x:golfState.ballX, y:golfState.ballY});
+      drawGolf();
+      // Draw trail
+      if(ballTrail.length > 2){
+        gCtx.strokeStyle='#ffffff33'; gCtx.lineWidth=1;
+        gCtx.beginPath(); gCtx.moveTo(ballTrail[0].x, ballTrail[0].y);
+        ballTrail.forEach(p => gCtx.lineTo(p.x, p.y));
+        gCtx.stroke();
+      }
+    }
+  }, 25);
+
   updateGolfUI();
 }
 
 function holeComplete(){
-  const h=currentHoleData();
-  const diff=golfState.strokes-h.par;
-  let name='Par';
-  if(diff<=-2)name='Eagle!';else if(diff===-1)name='Birdie!';else if(diff===0)name='Par';
-  else if(diff===1)name='Bogey';else if(diff===2)name='Double Bogey';else name=`+${diff}`;
-  showGolfTip(`Hole ${golfState.hole} complete! ${name} (${golfState.strokes} strokes, par ${h.par})`);
-  golfState.total+=golfState.strokes;
-  if(golfState.hole<9){
-    golfState.hole++;golfState.strokes=0;golfState.ballX=80;golfState.ballY=350;
+  const h = currentHoleData();
+  const diff = golfState.strokes - h.par;
+  let name, emoji;
+  if(golfState.strokes===1){ name='HOLE IN ONE (ACE)!!'; emoji='🏆'; }
+  else if(diff<=-3){ name='Albatross (Double Eagle)!!'; emoji='🦅'; }
+  else if(diff===-2){ name='Eagle!'; emoji='🦅'; }
+  else if(diff===-1){ name='Birdie!'; emoji='🐦'; }
+  else if(diff===0){ name='Par'; emoji='✓'; }
+  else if(diff===1){ name='Bogey'; emoji='😤'; }
+  else if(diff===2){ name='Double Bogey'; emoji='😬'; }
+  else if(diff===3){ name='Triple Bogey'; emoji='💀'; }
+  else if(golfState.strokes>=8){ name='Snowman'; emoji='⛄'; }
+  else{ name=`+${diff}`; emoji='🏌️'; }
+
+  const scoreStr = diff > 0 ? `+${diff}` : diff === 0 ? 'E' : `${diff}`;
+  golfState.scores.push({hole:golfState.hole, strokes:golfState.strokes, par:h.par, diff, name:name});
+  golfState.total += golfState.strokes;
+
+  let msg = `${emoji} Hole ${golfState.hole} "${h.name}" complete! ${name} — ${golfState.strokes} strokes (par ${h.par}, ${scoreStr})`;
+
+  if(golfState.hole < 9){
+    golfState.hole++;
+    golfState.strokes = 0;
+    golfState.ballX = 80;
+    golfState.ballY = 420;
+    msg += ` | Next up: Hole ${golfState.hole} "${currentHoleData().name}" (Par ${currentHoleData().par})`;
   } else {
-    showGolfTip(`Round complete! Total: ${golfState.total} strokes. ${golfState.total<36?'Amazing!':golfState.total<45?'Great round!':'Keep practicing!'}`);
+    const totalDiff = golfState.total - golfState.scores.reduce((s,h)=>s+h.par,0);
+    const totalStr = totalDiff>0?`+${totalDiff}`:totalDiff===0?'Even par':`${totalDiff}`;
+    msg += `\n\nROUND COMPLETE! Total: ${golfState.total} strokes (${totalStr}).`;
+    if(totalDiff <= -5) msg += ' "One of the greatest rounds I\'ve ever seen!" — Jim Nantz';
+    else if(totalDiff <= 0) msg += ' "Under par — you\'re ready for the club championship!"';
+    else if(totalDiff <= 9) msg += ' "Solid round. Keep grinding — that\'s what golf is all about."';
+    else msg += ' "Golf is a game of misses. The key is making your misses smaller." — Ben Hogan';
+    // Scorecard
+    msg += '\n\nScorecard: ' + golfState.scores.map(s=>`H${s.hole}:${s.strokes}(${s.diff>0?'+':''}${s.diff})`).join(' | ');
   }
-  updateGolfUI();drawGolf();
+
+  showGolfTip(msg);
+  updateGolfUI();
+  drawGolf();
 }
 
-function showGolfTip(msg){document.getElementById('golf-tips').innerHTML=msg;}
+function showGolfTip(msg){
+  const el = document.getElementById('golf-tips');
+  if(el) el.innerHTML = msg.replace(/\n/g,'<br>');
+}
+
 function updateGolfUI(){
-  const h=currentHoleData();
-  document.getElementById('golf-hole').textContent=golfState.hole;
-  document.getElementById('golf-par').textContent=h.par;
-  document.getElementById('golf-strokes').textContent=golfState.strokes;
-  document.getElementById('golf-total').textContent=golfState.total;
+  const h = currentHoleData();
+  document.getElementById('golf-hole').textContent = golfState.hole;
+  document.getElementById('golf-par').textContent = h.par;
+  document.getElementById('golf-strokes').textContent = golfState.strokes;
+  document.getElementById('golf-total').textContent = golfState.total;
+  const lie = getBallLie(golfState.ballX, golfState.ballY, h);
+  document.getElementById('golf-lie').textContent = lie.charAt(0).toUpperCase()+lie.slice(1);
+  const d = distYards(golfState.ballX, golfState.ballY, h.hx, h.hy);
+  document.getElementById('golf-dist').textContent = Math.round(d) + ' yds';
 }
 
-document.getElementById('golf-swing')?.addEventListener('click',swingGolf);
-document.getElementById('golf-reset')?.addEventListener('click',()=>{
-  golfState={hole:1,strokes:0,total:0,ballX:80,ballY:350,inFlight:false,holes:golfState.holes};
-  generateHoles();updateGolfUI();drawGolf();showGolfTip('New round! Step up to the tee.');
+// Update displays when sliders change
+document.getElementById('golf-power')?.addEventListener('input', ()=>{
+  document.getElementById('power-display').textContent = document.getElementById('golf-power').value+'%';
+  drawGolf();
 });
-document.getElementById('golf-power')?.addEventListener('input',drawGolf);
-document.getElementById('golf-angle')?.addEventListener('input',drawGolf);
-drawGolf();
+document.getElementById('golf-angle')?.addEventListener('input', ()=>{
+  const v = parseInt(document.getElementById('golf-angle').value);
+  document.getElementById('angle-display').textContent = v===0?'0° (straight)': v<0?`${v}° left`:`+${v}° right`;
+  drawGolf();
+});
+document.getElementById('golf-club')?.addEventListener('change', ()=>{
+  const clubKey = document.getElementById('golf-club').value;
+  const club = CLUBS[clubKey];
+  const h = currentHoleData();
+  const lie = getBallLie(golfState.ballX, golfState.ballY, h);
+  const d = distYards(golfState.ballX, golfState.ballY, h.hx, h.hy);
+  let tip = `${club.name}: max ${club.yards} yards.`;
+  if(!club.from.includes(lie)) tip += ` ⚠ Not recommended from ${lie}!`;
+  else tip += ` Good from this lie.`;
+  tip += ` You're ${Math.round(d)} yards out.`;
+  if(club.yards*0.85 < d && club.type!=='putter') tip += ' You may need more club.';
+  showGolfTip(tip);
+  drawGolf();
+});
+
+document.getElementById('golf-swing')?.addEventListener('click', swingGolf);
+document.getElementById('golf-reset')?.addEventListener('click', ()=>{
+  golfState = {hole:1, strokes:0, total:0, ballX:80, ballY:420, inFlight:false, holes:[], scores:[]};
+  generateHoles(); updateGolfUI(); drawGolf();
+  showGolfTip('"Every round is a new beginning." Tee it up! Pick your Driver for the first tee shot.');
+});
+drawGolf(); updateGolfUI();
+showGolfTip('Welcome to the course! Select your Driver, set your power, and aim for the fairway. "Grip it and rip it!"');
 
 // ===================== BLACKJACK =====================
 const suits=['♠','♥','♦','♣'];

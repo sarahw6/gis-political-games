@@ -114,26 +114,122 @@
   <!-- GOLF -->
   <div id="golf-game" class="game-area active">
     <div class="lesson-panel">
-      <h2>Golf Academy</h2>
+      <h2>Golf Academy — Master the Real Game</h2>
       <div id="golf-lesson">
-        <p><strong>Welcome to Golf!</strong> Golf is played over 18 holes. The goal: get the ball in the hole in as few strokes as possible.</p>
-        <p>Key concepts: <em>Par</em> (expected strokes), <em>Birdie</em> (-1), <em>Bogey</em> (+1), <em>Eagle</em> (-2)</p>
+        <p><strong>Welcome to the links!</strong> Golf is played over 18 holes on a course. The objective: complete each hole in as few strokes as possible. Your <em>score</em> is measured relative to par.</p>
+        <div class="golf-vocab">
+          <h3>Scoring Terms</h3>
+          <ul>
+            <li><strong>Ace / Hole-in-One:</strong> 1 stroke on any hole — the dream shot</li>
+            <li><strong>Condor:</strong> 4 under par (-4) — virtually mythical</li>
+            <li><strong>Albatross (Double Eagle):</strong> 3 under par (-3) — extremely rare</li>
+            <li><strong>Eagle:</strong> 2 under par (-2) — outstanding</li>
+            <li><strong>Birdie:</strong> 1 under par (-1) — great shot-making</li>
+            <li><strong>Par:</strong> Expected strokes for the hole (3, 4, or 5)</li>
+            <li><strong>Bogey:</strong> 1 over par (+1) — average for amateurs</li>
+            <li><strong>Double Bogey:</strong> 2 over (+2) | <strong>Triple Bogey:</strong> 3 over (+3)</li>
+            <li><strong>Snowman:</strong> Score of 8 on a hole — you want to avoid this</li>
+          </ul>
+          <h3>Course Anatomy</h3>
+          <ul>
+            <li><strong>Tee Box:</strong> Starting area — you "tee off" from here</li>
+            <li><strong>Fairway:</strong> The short-grass path from tee to green — keep it here</li>
+            <li><strong>Rough:</strong> Longer grass flanking the fairway — harder to hit from</li>
+            <li><strong>Green:</strong> Ultra-short grass around the hole — putt here</li>
+            <li><strong>Bunker (Sand Trap):</strong> Sand-filled hazards — requires a special shot to escape</li>
+            <li><strong>Water Hazard:</strong> Ponds, creeks, lakes — ball in = 1 stroke penalty</li>
+            <li><strong>Fringe/Apron:</strong> The collar of grass between fairway and green</li>
+            <li><strong>Dogleg:</strong> A hole that bends left or right — strategy matters</li>
+            <li><strong>Pin/Flagstick:</strong> The flag marking the hole's location on the green</li>
+          </ul>
+          <h3>Shot Types & Swing Terms</h3>
+          <ul>
+            <li><strong>Drive / Tee Shot:</strong> First shot, maximum distance off the tee</li>
+            <li><strong>Approach Shot:</strong> Aiming for the green from the fairway</li>
+            <li><strong>Chip:</strong> Short, low shot near the green — rolls more than it flies</li>
+            <li><strong>Pitch:</strong> Higher, shorter shot that lands soft on the green</li>
+            <li><strong>Putt:</strong> Rolling the ball along the green into the hole</li>
+            <li><strong>Fade:</strong> Gentle left-to-right curve (right-handed) — controlled shape</li>
+            <li><strong>Draw:</strong> Gentle right-to-left curve — adds distance</li>
+            <li><strong>Slice:</strong> Uncontrolled fade — curves hard right (common beginner mistake)</li>
+            <li><strong>Hook:</strong> Uncontrolled draw — curves hard left</li>
+            <li><strong>Shank:</strong> Ball shoots sideways off the hosel — the most dreaded miss</li>
+            <li><strong>Flop Shot:</strong> High, soft shot that stops quickly — Phil Mickelson's specialty</li>
+            <li><strong>Punch/Stinger:</strong> Low, penetrating shot under wind — Tiger's go-to</li>
+            <li><strong>Lay Up:</strong> Intentionally short shot to avoid a hazard</li>
+          </ul>
+          <h3>Common Golf Sayings</h3>
+          <ul>
+            <li><em>"Drive for show, putt for dough."</em> — Putting wins tournaments</li>
+            <li><em>"Grip it and rip it."</em> — Swing hard, worry later (John Daly style)</li>
+            <li><em>"It's not how, it's how many."</em> — Ugly shots that go in still count</li>
+            <li><em>"Every shot makes someone happy."</em> — Bad shots happen to everyone</li>
+            <li><em>"The ball doesn't know who's hitting it."</em> — Trust the swing, not the nerves</li>
+            <li><em>"Play the course, not your opponent."</em> — Focus on your own game</li>
+            <li><em>"A bad day of golf beats a good day at the office."</em> — Enjoy the walk</li>
+            <li><em>"Swing easy, hit hard."</em> — Tempo beats force every time</li>
+            <li><em>"Miss it on the correct side."</em> — Course management is key</li>
+          </ul>
+        </div>
       </div>
       <div class="golf-tips" id="golf-tips"></div>
     </div>
-    <canvas id="golf-canvas" width="700" height="450"></canvas>
+    <canvas id="golf-canvas" width="800" height="500"></canvas>
     <div class="golf-controls-panel">
-      <div>Hole: <span id="golf-hole">1</span>/9 | Par: <span id="golf-par">4</span> | Strokes: <span id="golf-strokes">0</span> | Total: <span id="golf-total">0</span></div>
-      <div>
-        <label>Power: <input type="range" id="golf-power" min="10" max="100" value="50"></label>
-        <label>Angle: <input type="range" id="golf-angle" min="-45" max="45" value="0"></label>
-        <label>Club: <select id="golf-club">
-          <option value="driver">Driver (max distance)</option>
-          <option value="iron">Iron (medium)</option>
-          <option value="wedge">Wedge (short/loft)</option>
-          <option value="putter">Putter (green only)</option>
-        </select></label>
-        <button id="golf-swing">Swing!</button>
+      <div class="golf-scoreboard">
+        <span>Hole: <strong id="golf-hole">1</strong>/9</span>
+        <span>Par: <strong id="golf-par">4</strong></span>
+        <span>Strokes: <strong id="golf-strokes">0</strong></span>
+        <span>Total: <strong id="golf-total">0</strong></span>
+        <span>Lie: <strong id="golf-lie">Tee Box</strong></span>
+        <span>Distance to Pin: <strong id="golf-dist">—</strong></span>
+      </div>
+      <div class="golf-club-controls">
+        <label>Club:
+          <select id="golf-club">
+            <optgroup label="Woods (Long Distance)">
+              <option value="driver">Driver (1W) — 230 yds, low loft, off tee only</option>
+              <option value="3wood">3-Wood — 210 yds, versatile off tee or fairway</option>
+              <option value="5wood">5-Wood — 195 yds, easier to hit, good from rough</option>
+            </optgroup>
+            <optgroup label="Hybrids (Forgiveness + Distance)">
+              <option value="3hybrid">3-Hybrid — 190 yds, replaces long irons</option>
+              <option value="4hybrid">4-Hybrid — 180 yds, rescue club from any lie</option>
+            </optgroup>
+            <optgroup label="Irons (Precision)">
+              <option value="5iron">5-Iron — 170 yds, long approach</option>
+              <option value="6iron">6-Iron — 160 yds, mid approach</option>
+              <option value="7iron" selected>7-Iron — 150 yds, the workhorse club</option>
+              <option value="8iron">8-Iron — 140 yds, controlled approach</option>
+              <option value="9iron">9-Iron — 130 yds, higher trajectory</option>
+            </optgroup>
+            <optgroup label="Wedges (Short Game & Loft)">
+              <option value="pw">Pitching Wedge (PW) — 120 yds, standard approach</option>
+              <option value="gw">Gap Wedge (GW/52°) — 100 yds, fills PW-SW gap</option>
+              <option value="sw">Sand Wedge (SW/56°) — 80 yds, bunker escape specialist</option>
+              <option value="lw">Lob Wedge (LW/60°) — 60 yds, max height, flop shots</option>
+            </optgroup>
+            <optgroup label="Putter (On the Green)">
+              <option value="putter">Putter — rolling only, green & fringe</option>
+            </optgroup>
+          </select>
+        </label>
+      </div>
+      <div class="golf-aim-controls">
+        <label>Power: <input type="range" id="golf-power" min="5" max="100" value="75"> <span id="power-display">75%</span></label>
+        <label>Aim (← left | right →): <input type="range" id="golf-angle" min="-30" max="30" value="0" step="1"> <span id="angle-display">0° (straight)</span></label>
+        <label>Shot Shape:
+          <select id="golf-shape">
+            <option value="straight">Straight — no curve</option>
+            <option value="fade">Fade — gentle left-to-right</option>
+            <option value="draw">Draw — gentle right-to-left, extra roll</option>
+            <option value="punch">Punch/Stinger — low, under the wind</option>
+            <option value="flop">Flop — max height, stops on a dime</option>
+          </select>
+        </label>
+      </div>
+      <div class="golf-action-buttons">
+        <button id="golf-swing">⛳ Swing!</button>
         <button id="golf-reset">New Round</button>
       </div>
     </div>
